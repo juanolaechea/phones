@@ -8,7 +8,9 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
+import java.lang.reflect.Array;
 import java.time.LocalTime;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -34,14 +36,11 @@ public class Tariff {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_city_origin")
-    @JsonBackReference
     @Fetch(FetchMode.JOIN)
      City cityOrigin;
 
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_city_destination")
-    @JsonBackReference
     @Fetch(FetchMode.JOIN)
      City cityDestination;
 

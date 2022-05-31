@@ -20,6 +20,8 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
@@ -65,6 +67,18 @@ public class UserServiceTest {
 
         final HttpStatus response = BAD_REQUEST;
         assertNotNull(response, "Should be not null.");
+    }
+
+    @Test
+    public void findByCode(){
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+        Integer id= 1;
+        Mockito.when(userRepository.findById(id)).thenReturn(Optional.of(aUser()));
+
+        final User response = userService.findByCode(id);
+        assertNotNull(response, "Should be not null.");
+
     }
 
 

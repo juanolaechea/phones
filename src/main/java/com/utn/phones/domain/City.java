@@ -26,7 +26,7 @@ public class City {
      String name;
 
     @Column(name = "code")
-     String code;
+     public String code;
 
 
     @JsonIgnore

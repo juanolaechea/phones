@@ -36,6 +36,7 @@ public class User{
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
+    @JsonBackReference
     @JoinColumn(name = "id_city")
     private City city;
 

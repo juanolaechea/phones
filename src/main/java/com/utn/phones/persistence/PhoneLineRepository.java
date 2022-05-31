@@ -12,5 +12,5 @@ import java.util.Optional;
 public interface PhoneLineRepository extends JpaRepository<PhoneLine,Integer> {
 
 
-     List<PhoneLine> findByNumberLine(String number);
+     PhoneLine findByNumberLine(String number);
 }

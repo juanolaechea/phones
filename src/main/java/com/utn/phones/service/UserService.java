@@ -4,6 +4,7 @@ import com.utn.phones.Utils.PostResponse;
 import com.utn.phones.domain.City;
 import com.utn.phones.domain.PhoneLine;
 import com.utn.phones.domain.User;
+import com.utn.phones.domain.UserType;
 import com.utn.phones.exceptions.*;
 import com.utn.phones.persistence.CityRepository;
 import com.utn.phones.persistence.PhoneLineRepository;
@@ -13,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.utn.phones.Utils.EntityURLBuilder.buildURL;
@@ -32,19 +34,30 @@ public class UserService {
         this.cityRepository = cityRepository;
         this.phoneLineRepository = phoneLineRepository;
     }
+            //preguntar si es un cliente
+    public PostResponse addClient(User user) throws ElementDoesNotAClient{
 
-    public PostResponse addClient(User user) {
-        User u = userRepository.save(user);
-
-        return PostResponse.builder()
-                .httpStatus(HttpStatus.CREATED)
-                .link(buildURL(currentPath, u.getIdUser().toString()))
-                .build();
-
+        if(user.getUserType() == UserType.client){
+            User u = userRepository.save(user);
+            return PostResponse.builder()
+                    .httpStatus(HttpStatus.CREATED)
+                    .link(buildURL(currentPath, u.getIdUser().toString()))
+                    .build();
+        }else {
+            throw new ElementDoesNotAClient();
+        }
     }
 
     public List<User> findAllClient() {
-        return this.userRepository.findAll();
+        List<User> users = new ArrayList<User>();
+        List<User>clients= new ArrayList<User>();
+        users=this.userRepository.findAll();
+        for (User user1:users) {
+            if(user1.getUserType()== UserType.client){
+                clients.add(user1);
+            }
+        }
+        return clients;
     }
 
     public User findByCode(Integer idClient) {
@@ -83,6 +96,8 @@ public class UserService {
                 .build();
     }
 
+
+
     public PostResponse putLineInClient(Integer idClient, Integer idLine) {
         User u = userRepository.getById(idClient);
         PhoneLine pl= phoneLineRepository.getById(idClient);
@@ -95,4 +110,6 @@ public class UserService {
                 .build();
 
     }
+
+
 }

@@ -9,4 +9,6 @@ public class ControllerConstants {
     public static final String URL_PHONE_LINE = "/phoneLine";
     public static final String URL_CITY= "/city";
     public static final String URL_TARIFF="/tariff";
+    public static final String URL_CALL="/calls";
+
 }

@@ -27,4 +27,8 @@ public class CityService {
     public City findById(Integer idCity) {
         return  this.cityRepository.findById(idCity).orElseThrow(ElementDoesNotExistsException::new);
     }
+
+    public City findByCode(String code){
+        return this.cityRepository.findByCode(code);
+    }
 }
