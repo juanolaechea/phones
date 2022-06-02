@@ -1,14 +1,10 @@
 package com.utn.phones.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -33,12 +29,9 @@ public class PhoneLine {
     private PhoneLineType lineType;
 
 
-    @OneToOne(orphanRemoval = true)
-    @JsonIgnore
-    @JoinTable(name = "phones_line_user",
-            joinColumns = @JoinColumn(name = "phone_line_id_line"),
-            inverseJoinColumns = @JoinColumn(name = "user_id_user"))
-    private User user;
+
+
+
 
 
 }

@@ -14,12 +14,11 @@ public class TariffService {
     private TariffRepository tariffRepository;
     private CityService cityService;
 
+    @Autowired
     public TariffService(TariffRepository tariffRepository, CityService cityService) {
         this.tariffRepository = tariffRepository;
         this.cityService = cityService;
     }
-
-    @Autowired
 
 
     public List<Tariff> getAllTariff() {
@@ -27,8 +26,8 @@ public class TariffService {
     }
 
     public Tariff getTariffByCities(String codeO, String codeD){
-        City o= this.cityService.findByCode("223");
-        City d= this.cityService.findByCode("280");
+        City o= this.cityService.findByCode(codeO);
+        City d= this.cityService.findByCode(codeD);
 
          Tariff t = this.tariffRepository.findByCityOriginAndCityDestination(o,d);
          return t;

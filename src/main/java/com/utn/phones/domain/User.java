@@ -1,52 +1,61 @@
 package com.utn.phones.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Entity
 @Table(name = "users")
-public class User{
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_user")
-    private Integer idUser;
-    @Column (name = "name")
-    private String name;
-    @Column (name = "last_name")
-    private String lastName;
-    @Column (name = "dni")
-    private Integer dni;
-    @Column (name = "password")
-    private String password;
-    @Column (name = "valid")
-    private Boolean valid;
+    Integer idUser;
+
+    @Column(name="username")
+    String username;
+
+    @Column(name="password")
+    String password;
 
     @Column (name = "type_user")
     @Enumerated(EnumType.STRING)
     private UserType userType;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JsonBackReference
-    @JoinColumn(name = "id_city")
-    private City city;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(userType.toString()));
+    }
 
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
 
-    @OneToOne(orphanRemoval = true)
-    @JoinTable(name = "users_phone_line",
-            joinColumns = @JoinColumn(name = "user_id_user"),
-            inverseJoinColumns = @JoinColumn(name = "phone_line_id_line"))
-    private PhoneLine phoneLine;
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
 
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
 
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
-

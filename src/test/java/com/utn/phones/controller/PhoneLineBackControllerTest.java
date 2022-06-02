@@ -4,11 +4,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.utn.phones.Utils.LocalDateDeserializer;
 import com.utn.phones.Utils.LocalDateSerializer;
-import com.utn.phones.controller.BackController.ClientBackController;
 import com.utn.phones.controller.BackController.PhoneLineBackController;
 import com.utn.phones.domain.PhoneLine;
 import com.utn.phones.domain.PhoneLineType;
-import com.utn.phones.domain.User;
+import com.utn.phones.domain.Client;
 import com.utn.phones.service.PhoneLineService;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -66,6 +65,9 @@ public class PhoneLineBackControllerTest extends Abstrascttest{
 
 
 
+
+
+
     public static String aPhoneLineJson() {
         final Gson prettyGson = new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class, new LocalDateSerializer())
@@ -76,6 +78,6 @@ public class PhoneLineBackControllerTest extends Abstrascttest{
     }
 
     public static PhoneLine aPhoneLine(){
-        return new PhoneLine(1,"12345678",true, PhoneLineType.valueOf("home"),new User());
+        return new PhoneLine(1,"12345678",true, PhoneLineType.valueOf("home"));
     }
 }

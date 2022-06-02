@@ -17,6 +17,8 @@ import static com.utn.phones.constants.ControllerConstants.*;
 public class CityBackController {
 
 
+    //no testear por no va
+
     private CityService cityService;
 
     @Autowired
@@ -33,6 +35,13 @@ public class CityBackController {
     public ResponseEntity<City>getCityById(@PathVariable("idCity")Integer idCity){
         return ResponseEntity.ok(this.cityService.findById(idCity));
     }
+
+    @GetMapping(URL_CITY + "/code"+"/{number}")
+    public City getCodeByNumber(@PathVariable("number")String  number){
+        return this.cityService.getCodeByNumber(number);
+    }
+
+
 
 
 }

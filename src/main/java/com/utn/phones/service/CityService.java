@@ -31,4 +31,11 @@ public class CityService {
     public City findByCode(String code){
         return this.cityRepository.findByCode(code);
     }
+
+
+    public City getCodeByNumber(String number) {
+        return this.cityRepository.getCodeByNumber(number);
+    }
+
+
 }

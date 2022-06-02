@@ -4,5 +4,5 @@ public enum UserType {
 
     client,
     Employee,
-    Admin
+    antenna
 }

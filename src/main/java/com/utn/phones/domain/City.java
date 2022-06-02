@@ -28,15 +28,14 @@ public class City {
     @Column(name = "code")
      public String code;
 
-
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="id_state", nullable = false)
+    @JoinColumn(name="fk_state", nullable = false)
      State state;
 
     @OneToMany(mappedBy = "city")
     @JsonBackReference
-    List<User> users = new ArrayList<User>();
+    List<Client> users = new ArrayList<Client>();
 
 
 

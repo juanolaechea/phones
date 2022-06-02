@@ -1,12 +1,9 @@
 package com.utn.phones.service;
 
 import com.utn.phones.Utils.PostResponse;
-import com.utn.phones.domain.City;
-import com.utn.phones.domain.PhoneLine;
-import com.utn.phones.domain.User;
-import com.utn.phones.domain.UserType;
+import com.utn.phones.domain.*;
 import com.utn.phones.persistence.CityRepository;
-import com.utn.phones.persistence.UserRepository;
+import com.utn.phones.persistence.ClientRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -28,14 +25,14 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-public class UserServiceTest {
+public class ClientServiceTest {
 
 
     @InjectMocks
-    UserService userService;
+    ClientService clientService;
 
     @Mock
-    UserRepository userRepository;
+    ClientRepository clientRepository;
 
     @Mock
     CityRepository cityRepository;
@@ -46,13 +43,13 @@ public class UserServiceTest {
         MockHttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
 
-        final User aUser = this.aUser();
-        final User aUserSaved = this.aUser();
-        aUserSaved.setIdUser(1);
+        final Client aClient= this.aClient();
+        final Client aClientSaved = this.aClient();
+        aClientSaved.setIdClient(1);
 
-        Mockito.when(userRepository.save(aUser)).thenReturn(aUserSaved);
+        Mockito.when(clientRepository.save(aClient)).thenReturn(aClientSaved);
 
-        final PostResponse response = userService.addClient(aUser);
+        final PostResponse response = clientService.addClient(aClient);
         assertNotNull(response, "Should be not null.");
     }
     @Test
@@ -61,9 +58,9 @@ public class UserServiceTest {
         MockHttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
 
-        final User aUser = null;
+        final Client aClient= null;
 
-        Mockito.when(userRepository.save(aUser)).thenReturn(aUser);
+        Mockito.when(clientRepository.save(aClient)).thenReturn(aClient);
 
         final HttpStatus response = BAD_REQUEST;
         assertNotNull(response, "Should be not null.");
@@ -74,17 +71,17 @@ public class UserServiceTest {
         MockHttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
         Integer id= 1;
-        Mockito.when(userRepository.findById(id)).thenReturn(Optional.of(aUser()));
+        Mockito.when(clientRepository.findById(id)).thenReturn(Optional.of(aClient()));
 
-        final User response = userService.findByCode(id);
+        final Client response = clientService.findByCode(id);
         assertNotNull(response, "Should be not null.");
 
     }
 
 
 
-    public static User aUser() {
-        return new User(1,"juan","OLaecvhea",12345,"1234",true, UserType.valueOf("client"),new City(),new PhoneLine());
+    public static Client aClient() {
+        return new Client(1,"juan","OLaecvhea",12345, UserType.valueOf("client"),new City(),new User(),new PhoneLine());
 
     }
 

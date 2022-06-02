@@ -11,17 +11,17 @@ import java.util.ArrayList;
 public class TestUtils {
 
 
-    public static String aUserJson() {
+    public static String aClientJson() {
         final Gson prettyGson = new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class, new LocalDateSerializer())
                 .registerTypeAdapter(LocalDate.class, new LocalDateDeserializer())
                 .setPrettyPrinting()
                 .create();
-        return prettyGson.toJson(aUser());
+        return prettyGson.toJson(aClient());
     }
 
-    public static User aUser() {
-        return new User(1,"juan","OLaecvhea",12345,"1234",true, UserType.valueOf("client"),new City(),new PhoneLine());
+    public static Client aClient() {
+        return new Client(1,"juan","OLaecvhea",12345, UserType.valueOf("client"),new City(),new User(),new PhoneLine());
 
     }
 
@@ -35,7 +35,7 @@ public class TestUtils {
     }
 
     public static City aCity(){
-        return new City(1,"Mar del plata","223",new State(),new ArrayList<User>());
+        return new City(1,"Mar del plata","223",new State(),new ArrayList<Client>());
     }
 
 }

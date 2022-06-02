@@ -1,33 +1,20 @@
 package com.utn.phones.controller;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.utn.phones.Utils.LocalDateDeserializer;
-import com.utn.phones.Utils.LocalDateSerializer;
 import com.utn.phones.controller.BackController.ClientBackController;
-import com.utn.phones.domain.City;
-import com.utn.phones.domain.PhoneLine;
-import com.utn.phones.domain.User;
-import com.utn.phones.domain.UserType;
 import com.utn.phones.service.CityService;
+import com.utn.phones.service.ClientService;
 import com.utn.phones.service.PhoneLineService;
 import com.utn.phones.service.UserService;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-
-import java.net.PortUnreachableException;
-import java.time.LocalDate;
 
 import static com.utn.phones.Utils.TestUtils.aCityJson;
-import static com.utn.phones.Utils.TestUtils.aUserJson;
+import static com.utn.phones.Utils.TestUtils.aClientJson;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -36,7 +23,7 @@ public class ClientBackControllerTest extends Abstrascttest {
 
 
     @MockBean
-    UserService userService;
+    ClientService clientService;
     @MockBean
     CityService cityService;
     @MockBean
@@ -47,7 +34,7 @@ public class ClientBackControllerTest extends Abstrascttest {
         final ResultActions resultActions = givenController().perform(MockMvcRequestBuilders
                 .post("/api/client/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(aUserJson()))
+                .content(aClientJson()))
                 .andExpect(status().isCreated());
 
 
@@ -67,15 +54,7 @@ public class ClientBackControllerTest extends Abstrascttest {
                 .getResponse()
                 .getStatus(),"Is should be 201");
     }
-    @Test
-    public void findClientById()throws Exception{
-        final  ResultActions resultActions = givenController().perform(MockMvcRequestBuilders
-                        .get("/api/client/1")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-        assertEquals(HttpStatus.OK.value(),resultActions.andReturn().getResponse().getStatus());
 
-    }
     @Test //ok
     public void findAllClient()throws Exception{
         final  ResultActions resultActions = givenController().perform(MockMvcRequestBuilders
@@ -85,12 +64,62 @@ public class ClientBackControllerTest extends Abstrascttest {
         assertEquals(HttpStatus.OK.value(),resultActions.andReturn().getResponse().getStatus());
 
     }
+
+
+    @Test //ok
+    public void findClientById()throws Exception{
+        final  ResultActions resultActions = givenController().perform(MockMvcRequestBuilders
+                        .get("/api/client/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+        assertEquals(HttpStatus.OK.value(),resultActions.andReturn().getResponse().getStatus());
+
+    }
+    @Test //ok
+    public void findClientByIdBadRequest()throws Exception{
+        final  ResultActions resultActions = givenController().perform(MockMvcRequestBuilders
+                        .get("/api/client/a")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+        assertEquals(HttpStatus.BAD_REQUEST.value(),resultActions.andReturn().getResponse().getStatus());
+    }
+
+
+
     @Test //ok
     public void putCityInClient()throws Exception{
         final ResultActions resultActions = givenController().perform(MockMvcRequestBuilders
                 .put("/api/client/1/city/1")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(aUserJson()).content(aCityJson()))
+                        .content(aClientJson()).content(aCityJson()))
+                .andExpect(status().isOk());
+
+        assertEquals(HttpStatus.OK.value(),resultActions.andReturn()
+                .getResponse()
+                .getStatus(),"Is should be 200");
+
+    }
+
+    @Test
+    public void putCityInClientBadRequest()throws Exception{
+        final ResultActions resultActions = givenController().perform(MockMvcRequestBuilders
+                        .put("/api/client/a/city/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(aClientJson()).content(aCityJson()))
+                .andExpect(status().isBadRequest());
+
+        assertEquals(HttpStatus.BAD_REQUEST.value(),resultActions.andReturn()
+                .getResponse()
+                .getStatus(),"Is should be 400");
+
+    }
+
+    @Test //ok
+    public void putLineInClient()throws Exception{
+        final ResultActions resultActions = givenController().perform(MockMvcRequestBuilders
+                        .put("/api/client/1/phoneLine/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(aClientJson()).content(aCityJson()))
                 .andExpect(status().isOk());
 
         assertEquals(HttpStatus.OK.value(),resultActions.andReturn()

@@ -1,6 +1,8 @@
 package com.utn.phones.controller;
 
 
+import com.utn.phones.exceptions.BadRequestException;
+import com.utn.phones.exceptions.DeauthorizedException;
 import com.utn.phones.exceptions.ElementDoesNotExistsException;
 import com.utn.phones.exceptions.ElementExistsException;
 import org.springframework.http.HttpStatus;
@@ -23,6 +25,13 @@ public class ControllerAdvice extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).build();
     }
 
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity processBadRequest() {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
 
+    @ExceptionHandler(DeauthorizedException.class)
+    public ResponseEntity processDeauthorized() {return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    }
 
 }
