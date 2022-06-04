@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.utn.phones.Utils.LocalDateDeserializer;
 import com.utn.phones.Utils.LocalDateSerializer;
 import com.utn.phones.controller.BackController.PhoneLineBackController;
+import com.utn.phones.domain.Bill;
 import com.utn.phones.domain.PhoneLine;
 import com.utn.phones.domain.PhoneLineType;
 import com.utn.phones.domain.Client;
@@ -18,6 +19,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -78,6 +80,6 @@ public class PhoneLineBackControllerTest extends Abstrascttest{
     }
 
     public static PhoneLine aPhoneLine(){
-        return new PhoneLine(1,"12345678",true, PhoneLineType.valueOf("home"));
+        return new PhoneLine(1,"12345678",true, PhoneLineType.valueOf("home"),new ArrayList<Bill>());
     }
 }

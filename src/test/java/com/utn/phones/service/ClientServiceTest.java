@@ -2,6 +2,7 @@ package com.utn.phones.service;
 
 import com.utn.phones.Utils.PostResponse;
 import com.utn.phones.domain.*;
+import com.utn.phones.exceptions.ElementDoesNotExistsException;
 import com.utn.phones.persistence.CityRepository;
 import com.utn.phones.persistence.ClientRepository;
 import org.junit.jupiter.api.Test;
@@ -17,8 +18,13 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
+import static com.utn.phones.Utils.EntityURLBuilder.buildURL;
+import static com.utn.phones.Utils.TestUtils.aClient;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
@@ -43,8 +49,8 @@ public class ClientServiceTest {
         MockHttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
 
-        final Client aClient= this.aClient();
-        final Client aClientSaved = this.aClient();
+        final Client aClient= aClient();
+        final Client aClientSaved =aClient();
         aClientSaved.setIdClient(1);
 
         Mockito.when(clientRepository.save(aClient)).thenReturn(aClientSaved);
@@ -65,7 +71,6 @@ public class ClientServiceTest {
         final HttpStatus response = BAD_REQUEST;
         assertNotNull(response, "Should be not null.");
     }
-
     @Test
     public void findByCode(){
         MockHttpServletRequest request = new MockHttpServletRequest();
@@ -77,13 +82,58 @@ public class ClientServiceTest {
         assertNotNull(response, "Should be not null.");
 
     }
-
-
-
-    public static Client aClient() {
-        return new Client(1,"juan","OLaecvhea",12345, UserType.valueOf("client"),new City(),new User(),new PhoneLine());
+    @Test
+    public void findByCodeBadRequeste(){
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes((new ServletRequestAttributes(request)));
+        Integer id=null;
+        Mockito.when(clientRepository.findById(id)).thenReturn(Optional.of(aClient()));
+        final HttpStatus response = BAD_REQUEST;
+        assertNotNull(response, "Should be not null.");
 
     }
+
+    @Test
+    public void findAllClient(){
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+
+        List<Client> clients = new ArrayList<>();
+        clients.add(aClient());
+        Mockito.when(clientRepository.findAll()).thenReturn(clients);
+
+        final List<Client> response = clientService.findAllClient();
+        assertNotNull(response);
+
+    }
+
+    /*
+    @Test
+    public void putCityInUser()throws ElementDoesNotExistsException {
+
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+        Client cl = aClient();
+        City c= aCity();
+
+
+        Mockito.when(clientRepository.findById(cl.getIdClient())).thenReturn(Optional.of(cl));
+        Mockito.when(cityRepository.findById(c.getIdCity())).thenReturn(Optional.of(c));
+        cl.setCity(c);
+        Mockito.when(clientRepository.save(cl)).thenReturn(cl);
+
+        clientService.putCityInUser(c.getIdCity(),cl.getIdClient());
+
+
+    }
+
+     */
+
+
+
+
+
+
 
 
 

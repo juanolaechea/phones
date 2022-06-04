@@ -13,8 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static com.utn.phones.Utils.TestUtils.aCityJson;
-import static com.utn.phones.Utils.TestUtils.aClientJson;
+import static com.utn.phones.Utils.TestUtils.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -66,22 +65,45 @@ public class ClientBackControllerTest extends Abstrascttest {
     }
 
 
+    /*
     @Test //ok
     public void findClientById()throws Exception{
+        final ResultActions resultActions = givenController().perform(MockMvcRequestBuilders
+                        .get("api/client/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        assertEquals(HttpStatus.OK.value(), resultActions.andReturn().getResponse().getStatus());
+
+    }
+
+     */
+    @Test //ok
+    public void findClientByIdException()throws Exception{
         final  ResultActions resultActions = givenController().perform(MockMvcRequestBuilders
-                        .get("/api/client/1")
+                        .get("/api/client/a")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+        assertEquals(HttpStatus.BAD_REQUEST.value(),resultActions.andReturn().getResponse().getStatus());
+    }
+
+    @Test //ok
+    public void deleteClientById()throws Exception{
+        final  ResultActions resultActions = givenController().perform(MockMvcRequestBuilders
+                        .delete("/api/client/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
         assertEquals(HttpStatus.OK.value(),resultActions.andReturn().getResponse().getStatus());
 
     }
     @Test //ok
-    public void findClientByIdBadRequest()throws Exception{
+    public void deleteClientByIdeException()throws Exception{
         final  ResultActions resultActions = givenController().perform(MockMvcRequestBuilders
-                        .get("/api/client/a")
+                        .delete("/api/client/a")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
         assertEquals(HttpStatus.BAD_REQUEST.value(),resultActions.andReturn().getResponse().getStatus());
+
     }
 
 
@@ -114,12 +136,15 @@ public class ClientBackControllerTest extends Abstrascttest {
 
     }
 
+
+
+    /*
     @Test //ok
     public void putLineInClient()throws Exception{
         final ResultActions resultActions = givenController().perform(MockMvcRequestBuilders
                         .put("/api/client/1/phoneLine/1")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(aClientJson()).content(aCityJson()))
+                        .content(aPhoneJson()).content(aPhoneJson()))
                 .andExpect(status().isOk());
 
         assertEquals(HttpStatus.OK.value(),resultActions.andReturn()
@@ -127,6 +152,8 @@ public class ClientBackControllerTest extends Abstrascttest {
                 .getStatus(),"Is should be 200");
 
     }
+
+     */
 
 
 
