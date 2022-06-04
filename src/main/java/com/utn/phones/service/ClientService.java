@@ -94,7 +94,7 @@ public class ClientService {
     }
 
 
-
-
-
+    public Client getClientByNumber(PhoneLine phoneLine) {
+        return this.clientRepository.findByPhoneLine(phoneLine);
+    }
 }

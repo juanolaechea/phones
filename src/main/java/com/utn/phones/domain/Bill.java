@@ -40,5 +40,13 @@ public class Bill {
      @JoinColumn(name = "phone_line_id_line")
      PhoneLine phoneLine;
 
+    @ManyToOne
+    @JoinColumn(name = "client_id_client")
+    Client client;
+
+
+
+
+
 
 }

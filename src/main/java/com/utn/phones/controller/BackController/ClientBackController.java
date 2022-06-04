@@ -2,6 +2,7 @@ package com.utn.phones.controller.BackController;
 
 
 import com.utn.phones.Utils.PostResponse;
+import com.utn.phones.domain.City;
 import com.utn.phones.domain.Client;
 import com.utn.phones.domain.User;
 import com.utn.phones.exceptions.*;
@@ -38,50 +39,49 @@ public class ClientBackController {
     }
 
 
-
     //Agregar cliente /testeOk
     @PostMapping(URL_CLIENT + "/")
     @ResponseStatus(HttpStatus.CREATED)
-    public PostResponse addCient(@RequestBody Client user){
+    public PostResponse addCient(@RequestBody Client user) {
         return clientService.addClient(user);
     }
 
 
     //Traer todos los clientes
     @GetMapping(URL_CLIENT)
-    public List<Client> findAllClient(){
+    public List<Client> findAllClient() {
         return clientService.findAllClient();
     }
 
     //Traer client por id
-    @GetMapping(path=URL_CLIENT + "/{idClient}")
-    public Client findClientById (Authentication auth, @PathVariable("idClient") final Integer idClient)throws ElementDoesNotExistsException,BadRequestException, DeauthorizedException {
+    @GetMapping(path = URL_CLIENT + "/{idClient}")
+    public Client findClientById(Authentication auth, @PathVariable("idClient") final Integer idClient) throws ElementDoesNotExistsException, BadRequestException, DeauthorizedException {
         User u = (User) auth.getPrincipal();
-        Client c =this.clientService.findByCode(idClient);
-        if(c.getUser().equals(u)){
+        Client c = this.clientService.findByCode(idClient);
+        if (c.getUser().equals(u)) {
             return this.clientService.findByCode(idClient);
-        }else {
+        } else {
             throw new DeauthorizedException();
         }
 
     }
 
-   //Agregar ciudad a client
-    @PutMapping(path = URL_CLIENT + "/{idClient}" + URL_CITY +"/{idCity}")
-    public PostResponse putCityInClient(@PathVariable("idClient")Integer idClient, @PathVariable("idCity")Integer idCity )throws ElementDoesNotExistsException, BadRequestException {
-        return clientService.putCityInUser(idClient,idCity);
+    //Agregar ciudad a client
+    @PutMapping(path = URL_CLIENT + "/{idClient}" + URL_CITY + "/{idCity}")
+    public PostResponse putCityInClient(@PathVariable("idClient") Integer idClient, @PathVariable("idCity") Integer idCity) throws ElementDoesNotExistsException, BadRequestException {
+        return clientService.putCityInUser(idClient, idCity);
     }
 
     //Agregar line a client
-    @PutMapping(path = URL_CLIENT + "/{idClient}" +URL_PHONE_LINE +"/{idLine}")
-    public PostResponse putLineInClient(@PathVariable("idClient")Integer idClient,@PathVariable("IdLine")Integer idLine)throws ElementDoesNotExistsException, BadRequestException {
-        return clientService.putPhoneLineInUser(idClient,idLine);
+    @PutMapping(path = URL_CLIENT + "/{idClient}" + URL_PHONE_LINE + "/{idLine}")
+    public PostResponse putLineInClient(@PathVariable("idClient") Integer idClient, @PathVariable("IdLine") Integer idLine) throws ElementDoesNotExistsException, BadRequestException {
+        return clientService.putPhoneLineInUser(idClient, idLine);
     }
 
     //Eliminar cliente
-    @DeleteMapping(path =URL_CLIENT + "/{idClient}" )
-    public PostResponse deleteClientById(@PathVariable("idClient")Integer idClient){
-        return  this.clientService.deleteClient(idClient);
+    @DeleteMapping(path = URL_CLIENT + "/{idClient}")
+    public PostResponse deleteClientById(@PathVariable("idClient") Integer idClient) {
+        return this.clientService.deleteClient(idClient);
     }
 
 

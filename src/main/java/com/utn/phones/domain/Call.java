@@ -41,6 +41,8 @@ public class Call{
     Float totalPrice;
     @Column (name = "price_x_minute")
     Float priceXmin;
+    @Column (name = "invoice")
+    Boolean invoice;
 
 
     @ManyToOne(fetch = FetchType.EAGER)

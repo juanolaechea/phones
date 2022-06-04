@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -29,9 +31,9 @@ public class PhoneLine {
     private PhoneLineType lineType;
 
 
-
-
-
+    @OneToMany(orphanRemoval = true)
+    @JoinColumn(name = "phone_line_id_line")
+    List<Bill> bills = new ArrayList<>();
 
 
 }

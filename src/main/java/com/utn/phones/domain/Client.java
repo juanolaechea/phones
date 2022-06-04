@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -43,6 +45,9 @@ public class Client {
 
     @OneToOne(fetch = FetchType.EAGER)
     private PhoneLine phoneLine;
+
+    @OneToMany(mappedBy = "client")
+    List<Bill> bills = new ArrayList<>();
 
 
 
