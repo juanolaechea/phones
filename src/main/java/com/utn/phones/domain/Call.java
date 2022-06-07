@@ -28,10 +28,18 @@ public class Call{
     @Column (name = "id_call")
      Integer idCall;
 
-    @Column(name="phone_line_origin")
-    String phoneLineOrigin;
-    @Column(name = "phone_line_destination")
-    String phoneLineDestination;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_line_origin")
+    @Fetch(FetchMode.JOIN)
+    @JsonBackReference
+    PhoneLine phoneLineOrigin;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_line_destination")
+    @Fetch(FetchMode.JOIN)
+    @JsonBackReference
+    PhoneLine phoneLineDestination;
+
     @Column(name="date_time")
     LocalDateTime dateTime;
     @Column (name = "duration")

@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import static com.utn.phones.Utils.TestUtils.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -35,7 +36,7 @@ public class PhoneLineBackControllerTest extends Abstrascttest{
         final ResultActions resultActions = givenController().perform(MockMvcRequestBuilders
                         .post("/api/phoneLine")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(aPhoneLineJson()))
+                        .content(aPhoneJson()))
                 .andExpect(status().isCreated());
 
         assertEquals(HttpStatus.CREATED.value(),resultActions.andReturn()
@@ -62,24 +63,41 @@ public class PhoneLineBackControllerTest extends Abstrascttest{
         assertEquals(HttpStatus.OK.value(),resultActions.andReturn().getResponse().getStatus());
     }
 
+    @Test //ok
+    public void getPhoneLineById()throws Exception {
+        final ResultActions resultActions = givenController().perform(MockMvcRequestBuilders
+                        .get("/api/phoneLine/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
 
+        assertEquals(HttpStatus.OK.value(), resultActions.andReturn().getResponse().getStatus());
+    }
+    @Test //ok
+    public void getPhoneLineByIdBadRequest()throws Exception {
+        final ResultActions resultActions = givenController().perform(MockMvcRequestBuilders
+                        .get("/api/phoneLine/a")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
 
+        assertEquals(HttpStatus.BAD_REQUEST.value(), resultActions.andReturn().getResponse().getStatus());
+    }
+    @Test //ok
+    public void deletePhoneLine()throws Exception {
+        final ResultActions resultActions = givenController().perform(MockMvcRequestBuilders
+                        .delete("/api/phoneLine/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
 
-
-
-
-
-
-    public static String aPhoneLineJson() {
-        final Gson prettyGson = new GsonBuilder()
-                .registerTypeAdapter(LocalDate.class, new LocalDateSerializer())
-                .registerTypeAdapter(LocalDate.class, new LocalDateDeserializer())
-                .setPrettyPrinting()
-                .create();
-        return prettyGson.toJson(aPhoneLine());
+        assertEquals(HttpStatus.OK.value(), resultActions.andReturn().getResponse().getStatus());
     }
 
-    public static PhoneLine aPhoneLine(){
-        return new PhoneLine(1,"12345678",true, PhoneLineType.valueOf("home"),new ArrayList<Bill>());
-    }
+
+
+
+
+
+
+
+
+
 }

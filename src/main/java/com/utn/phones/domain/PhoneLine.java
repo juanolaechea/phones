@@ -1,6 +1,7 @@
 package com.utn.phones.domain;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Builder
 @Entity
 @Table (name = "phones_line")
 public class PhoneLine {
@@ -34,6 +36,7 @@ public class PhoneLine {
     @OneToMany(orphanRemoval = true)
     @JoinColumn(name = "phone_line_id_line")
     List<Bill> bills = new ArrayList<>();
+
 
 
 }

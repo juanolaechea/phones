@@ -65,11 +65,11 @@ public class ClientBackControllerTest extends Abstrascttest {
     }
 
 
-    /*
+
     @Test //ok
     public void findClientById()throws Exception{
         final ResultActions resultActions = givenController().perform(MockMvcRequestBuilders
-                        .get("api/client/1")
+                        .get("/api/client/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
@@ -77,7 +77,7 @@ public class ClientBackControllerTest extends Abstrascttest {
 
     }
 
-     */
+
     @Test //ok
     public void findClientByIdException()throws Exception{
         final  ResultActions resultActions = givenController().perform(MockMvcRequestBuilders

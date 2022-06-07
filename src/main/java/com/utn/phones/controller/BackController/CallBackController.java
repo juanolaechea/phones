@@ -5,6 +5,7 @@ import com.utn.phones.Utils.PostResponse;
 import com.utn.phones.domain.Call;
 import com.utn.phones.dto.CallSenderDto;
 import com.utn.phones.service.CallService;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,6 @@ public class CallBackController {
 
     private CallService callService;
 
-    @Autowired
     public CallBackController(CallService callService) {
         this.callService = callService;
     }

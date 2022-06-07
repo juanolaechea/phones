@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
+import javax.validation.constraints.Null;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,15 +43,12 @@ public class ClientService {
     //preguntar si es un cliente
     public PostResponse addClient(Client client) throws ElementDoesNotAClient {
 
-        if(client.getUserType() == UserType.client){
             Client cl = clientRepository.save(client);
             return PostResponse.builder()
                     .httpStatus(HttpStatus.CREATED)
                     .link(buildURL(currentPath, cl.getIdClient().toString()))
                     .build();
-        }else {
-            throw new ElementDoesNotAClient();
-        }
+
     }
 
     public List<Client> findAllClient() {
@@ -85,12 +83,16 @@ public class ClientService {
 
 
 
-    public PostResponse deleteClient(Integer idClient) {
+    public PostResponse deleteClient(Integer idClient) throws ElementDoesNotExistsException {
+        if(clientRepository.existsById(idClient)) {
+            this.clientRepository.deleteById(idClient);
+            return PostResponse.builder()
+                    .httpStatus(HttpStatus.OK)
+                    .build();
+        }else {
+            throw new ElementDoesNotExistsException();
+        }
 
-        this.clientRepository.deleteById(idClient);
-        return PostResponse.builder()
-                .httpStatus(HttpStatus.OK)
-                .build();
     }
 
 

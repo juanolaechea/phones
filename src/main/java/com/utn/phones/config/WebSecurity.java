@@ -42,8 +42,9 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .authorizeRequests().antMatchers("/login").permitAll()
                 .antMatchers("/api/calls").permitAll()
-                .antMatchers("api/client").hasAuthority(UserType.client.toString())
-                .antMatchers("api/client").hasAuthority(UserType.Employee.toString())
+                .antMatchers("/api/client").hasAuthority(UserType.client.toString())
+                .antMatchers("/api/client").hasAuthority(UserType.Employee.toString())
+                .antMatchers("/api/phoneLine").hasAuthority(UserType.Employee.toString())
                 .anyRequest().authenticated()
                 .and().addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
         ;

@@ -1,9 +1,13 @@
 package com.utn.phones.service;
 
 import com.utn.phones.domain.*;
+import com.utn.phones.dto.PhoneLineDto;
 import com.utn.phones.persistence.CallRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class CallService {
@@ -25,17 +29,20 @@ public class CallService {
     }
 
     public void newCall(Call call) {
-        City cityOrigin = cityService.getCodeByNumber(call.getPhoneLineOrigin());
-        City cityDestinatio = cityService.getCodeByNumber(call.getPhoneLineDestination());
+        City cityOrigin = cityService.getCodeByNumber(call.getPhoneLineOrigin().getNumberLine());
+        City cityDestinatio = cityService.getCodeByNumber(call.getPhoneLineDestination().getNumberLine());
         Tariff t = tariffService.getTariffByCities(cityOrigin.getCode(), cityDestinatio.getCode());
-        Float totalPrice = totalPrice(call,t.getPriceXminute());
-        PhoneLine pl=phoneLineService.getPhoneLineByNumberLine(call.getPhoneLineOrigin());
-        Client c =clientService.getClientByNumber(pl);
+        Float totalPrice = totalPrice(call, t.getPriceXminute());
+        PhoneLine plo = phoneLineService.getPhoneLineByNumberLine(call.getPhoneLineOrigin().getNumberLine());
+        PhoneLine pld = phoneLineService.getPhoneLineByNumberLine(call.getPhoneLineDestination().getNumberLine());
+        Client c = clientService.getClientByNumber(plo);
 
         call.setCityOrigin(cityOrigin);
         call.setCityDestination(cityDestinatio);
         call.setPriceXmin(t.getPriceXminute());
         call.setTotalPrice(totalPrice);
+        call.setPhoneLineOrigin(plo);
+        call.setPhoneLineDestination(pld);
         call.setInvoice(false);
         this.callRepository.save(call);
     }
@@ -43,4 +50,14 @@ public class CallService {
     public Float totalPrice(Call call,Float precexmin){
         return call.getDuration() * precexmin;
     }
+
+    public List<Call> getAllCalls(){
+        return this.callRepository.findAll();
+    }
+
+    public ArrayList<Call> getAllCallsNotInvoice(){
+        return this.callRepository.findAllNotInvoice();
+    }
+
+
 }

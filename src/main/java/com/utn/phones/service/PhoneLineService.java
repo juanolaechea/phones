@@ -2,10 +2,7 @@ package com.utn.phones.service;
 
 import com.utn.phones.Utils.PostResponse;
 import com.utn.phones.domain.PhoneLine;
-import com.utn.phones.exceptions.ElementDoesNotExistsException;
-import com.utn.phones.exceptions.ElementExistsException;
-import com.utn.phones.exceptions.PhoneLineException;
-import com.utn.phones.exceptions.ValidationPhoneLineException;
+import com.utn.phones.exceptions.*;
 import com.utn.phones.persistence.PhoneLineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,6 +28,7 @@ public class PhoneLineService {
     public PhoneLineService(PhoneLineRepository phoneLineRepository) {
         this.phoneLineRepository = phoneLineRepository;
     }
+    
 
     public PostResponse addPhoneLine(PhoneLine phoneLine) {
         PhoneLine pl =phoneLineRepository.save(phoneLine);
@@ -46,9 +44,9 @@ public class PhoneLineService {
         return  phoneLineRepository.findAll();
     }
 
-    public PhoneLine findByCode(Integer idPhoneLine){
+    public PhoneLine findByCode(Integer idPhoneLine) throws DeauthorizedException {
         return phoneLineRepository.findById(idPhoneLine)
-                .orElseThrow(() -> new HttpClientErrorException(HttpStatus.BAD_REQUEST, "User not Exists "));
+                .orElseThrow(() -> new HttpClientErrorException(HttpStatus.BAD_REQUEST, "PhoneLine not Exists "));
     }
 
     public void deletePhoneLine(Integer idPhoneLine) {
@@ -76,12 +74,8 @@ public class PhoneLineService {
         }
     }
 
-    public PhoneLine getPhoneLineByNumberLine(String numberLine)throws ElementDoesNotExistsException {
-
-       if(numberLine != null){
+    public PhoneLine getPhoneLineByNumberLine(String numberLine) {
            return this.phoneLineRepository.findByNumberLine(numberLine);
-       }else {
-           throw new ElementDoesNotExistsException();
-       }
+
     }
 }

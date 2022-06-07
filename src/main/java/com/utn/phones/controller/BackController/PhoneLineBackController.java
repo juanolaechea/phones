@@ -2,6 +2,8 @@ package com.utn.phones.controller.BackController;
 
 import com.utn.phones.Utils.PostResponse;
 import com.utn.phones.domain.PhoneLine;
+import com.utn.phones.exceptions.DeauthorizedException;
+import com.utn.phones.exceptions.ElementExistsException;
 import com.utn.phones.exceptions.PhoneLineException;
 import com.utn.phones.exceptions.ValidationPhoneLineException;
 import com.utn.phones.service.PhoneLineService;
@@ -15,6 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 
+import java.net.Authenticator;
 import java.net.URI;
 import java.util.List;
 
@@ -47,7 +50,7 @@ public class PhoneLineBackController {
     }
     //Buscar linea por id
     @GetMapping(path = URL_PHONE_LINE + "/{idPhoneLine}")
-    public PhoneLine getPhoneLineById(@PathVariable("idPhoneLine")final Integer idPhoneLine){
+    public PhoneLine getPhoneLineById(@PathVariable("idPhoneLine") Integer idPhoneLine) {
         return this.phoneLineService.findByCode(idPhoneLine);
     }
 
@@ -76,7 +79,7 @@ public class PhoneLineBackController {
         }
     }
 
-    //Traert linea por numero
+    //Traert linea por numero No testear es para probar
     @GetMapping(path= URL_PHONE_LINE +"/find/" )
     public PhoneLine getPhoneLineByNumberLine(@RequestParam String numberLine){
         return this.phoneLineService.getPhoneLineByNumberLine(numberLine);

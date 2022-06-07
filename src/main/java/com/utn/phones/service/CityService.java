@@ -24,7 +24,7 @@ public class CityService {
     }
 
 
-    public City findById(Integer idCity) {
+    public City findById(Integer idCity) throws ElementDoesNotExistsException{
         return  this.cityRepository.findById(idCity).orElseThrow(ElementDoesNotExistsException::new);
     }
 

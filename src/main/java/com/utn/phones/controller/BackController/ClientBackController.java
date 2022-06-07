@@ -42,7 +42,7 @@ public class ClientBackController {
     //Agregar cliente /testeOk
     @PostMapping(URL_CLIENT + "/")
     @ResponseStatus(HttpStatus.CREATED)
-    public PostResponse addCient(@RequestBody Client user) {
+    public PostResponse addCient(@RequestBody Client user) throws ElementDoesNotExistsException {
         return clientService.addClient(user);
     }
 
@@ -80,7 +80,7 @@ public class ClientBackController {
 
     //Eliminar cliente
     @DeleteMapping(path = URL_CLIENT + "/{idClient}")
-    public PostResponse deleteClientById(@PathVariable("idClient") Integer idClient) {
+    public PostResponse deleteClientById(@PathVariable("idClient") Integer idClient) throws ElementDoesNotExistsException  {
         return this.clientService.deleteClient(idClient);
     }
 

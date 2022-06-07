@@ -22,11 +22,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.utn.phones.Utils.EntityURLBuilder.buildURL;
+import static com.utn.phones.Utils.TestUtils.aCity;
 import static com.utn.phones.Utils.TestUtils.aClient;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.http.HttpStatus.*;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -58,6 +57,7 @@ public class ClientServiceTest {
         final PostResponse response = clientService.addClient(aClient);
         assertNotNull(response, "Should be not null.");
     }
+
     @Test
     public void addClientBadRequest() {
 
@@ -72,7 +72,7 @@ public class ClientServiceTest {
         assertNotNull(response, "Should be not null.");
     }
     @Test
-    public void findByCode(){
+    public void findByCode() throws ElementDoesNotExistsException {
         MockHttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
         Integer id= 1;
@@ -107,9 +107,9 @@ public class ClientServiceTest {
 
     }
 
-    /*
+
     @Test
-    public void putCityInUser()throws ElementDoesNotExistsException {
+    public void putCityInUser() {
 
         MockHttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
@@ -117,17 +117,31 @@ public class ClientServiceTest {
         City c= aCity();
 
 
-        Mockito.when(clientRepository.findById(cl.getIdClient())).thenReturn(Optional.of(cl));
-        Mockito.when(cityRepository.findById(c.getIdCity())).thenReturn(Optional.of(c));
+        Mockito.when(clientRepository.getById(cl.getIdClient())).thenReturn(aClient());
+        Mockito.when(cityRepository.getById(c.getIdCity())).thenReturn(aCity());
         cl.setCity(c);
         Mockito.when(clientRepository.save(cl)).thenReturn(cl);
 
-        clientService.putCityInUser(c.getIdCity(),cl.getIdClient());
-
+        final PostResponse response = clientService.putCityInUser(cl.getIdClient(),c.getIdCity());
+        assertNotNull(response);
 
     }
 
-     */
+    @Test
+    public void deleteClient() throws ElementDoesNotExistsException {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+
+        Integer id=1;
+        Mockito.when(clientRepository.existsById(1)).thenReturn(true);
+        PostResponse reaponse =clientService.deleteClient(id);
+
+        final PostResponse response = clientService.deleteClient(id);
+        assertEquals(OK,response.getHttpStatus());
+
+    }
+
+
 
 
 
