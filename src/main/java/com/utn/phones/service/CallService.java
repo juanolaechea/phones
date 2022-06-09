@@ -1,13 +1,17 @@
 package com.utn.phones.service;
 
 import com.utn.phones.domain.*;
-import com.utn.phones.dto.PhoneLineDto;
 import com.utn.phones.persistence.CallRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import static java.time.LocalDateTime.now;
 
 @Service
 public class CallService {
@@ -43,6 +47,7 @@ public class CallService {
         call.setTotalPrice(totalPrice);
         call.setPhoneLineOrigin(plo);
         call.setPhoneLineDestination(pld);
+        call.setClient(c);
         call.setInvoice(false);
         this.callRepository.save(call);
     }
@@ -60,4 +65,13 @@ public class CallService {
     }
 
 
+    public List<Call> getCallByRank(Integer idClient, LocalDateTime from, LocalDateTime to) {
+
+        LocalDateTime ahora=  now();
+
+        //Date fromsql= Date.valueOf(String.valueOf(from));
+       // Date tosql = Date.valueOf(String.valueOf(to));
+
+        return callRepository.findAllByClientBetween(idClient,from,to);
+    }
 }

@@ -40,7 +40,7 @@ public class Call{
     @JsonBackReference
     PhoneLine phoneLineDestination;
 
-    @Column(name="date_time")
+    @Column(name="date")
     LocalDateTime dateTime;
     @Column (name = "duration")
     Long duration;
@@ -64,6 +64,12 @@ public class Call{
     @Fetch(FetchMode.JOIN)
     @JsonBackReference
     private City cityDestination;
+
+    @ManyToOne
+    @JoinColumn(name = "client_id_client")
+    @JsonBackReference
+    Client client;
+
 
 
 

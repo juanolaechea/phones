@@ -44,7 +44,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/calls").permitAll()
                 .antMatchers("/api/client").hasAuthority(UserType.client.toString())
                 .antMatchers("/api/client").hasAuthority(UserType.Employee.toString())
-                .antMatchers("/api/phoneLine").hasAuthority(UserType.Employee.toString())
+                .antMatchers("/api/phoneLine").permitAll()
+                .antMatchers("/web/").permitAll()
                 .anyRequest().authenticated()
                 .and().addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
         ;

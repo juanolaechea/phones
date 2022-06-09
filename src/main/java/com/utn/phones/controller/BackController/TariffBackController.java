@@ -22,7 +22,6 @@ public class TariffBackController {
 
 
     private TariffService tariffService;
-    private PhoneLineService phoneLineService;
 
     @Autowired
     public TariffBackController(TariffService tariffService) {

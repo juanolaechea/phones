@@ -1,6 +1,8 @@
 package com.utn.phones.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,8 +29,10 @@ public class User implements UserDetails {
     @Column(name="username")
     String username;
 
+    @JsonIgnore
+    @JsonBackReference
     @Column(name="password")
-    String password;
+    private String password;
 
     @Column (name = "type_user")
     @Enumerated(EnumType.STRING)

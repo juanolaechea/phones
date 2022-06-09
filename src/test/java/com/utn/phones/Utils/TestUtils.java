@@ -25,7 +25,7 @@ public class TestUtils {
     }
 
     public static Client aClient() {
-        return new Client(1,"juan","OLaecvhea",12345, UserType.valueOf("client"),new City(),new User(),new PhoneLine(),new ArrayList<Bill>());
+        return new Client(1,"juan","OLaecvhea",12345, UserType.valueOf("client"),new City(),new User(),new PhoneLine(),new ArrayList<Bill>(),new ArrayList<Call>());
 
     }
 

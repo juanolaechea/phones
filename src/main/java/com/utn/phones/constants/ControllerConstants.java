@@ -10,6 +10,7 @@ public class ControllerConstants {
     public static final String URL_CITY= "/city";
     public static final String URL_TARIFF="/tariff";
     public static final String URL_CALL="/calls";
-    public static final String URl_USER="/user";
+    public static final String URl_USER = "/user";
+    public static final String BASE_web = "/web";
 
 }

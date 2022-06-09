@@ -22,11 +22,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.utn.phones.Utils.EntityURLBuilder.buildURL;
+import static com.utn.phones.constants.ControllerConstants.URL_CLIENT;
 
 @Service
 public class ClientService {
 
-    private static final String currentPath = "user";
+
 
     private final ClientRepository clientRepository;
     private final CityRepository cityRepository;
@@ -46,7 +47,7 @@ public class ClientService {
             Client cl = clientRepository.save(client);
             return PostResponse.builder()
                     .httpStatus(HttpStatus.CREATED)
-                    .link(buildURL(currentPath, cl.getIdClient().toString()))
+                    .link(buildURL(URL_CLIENT, cl.getIdClient().toString()))
                     .build();
 
     }
@@ -67,7 +68,7 @@ public class ClientService {
         this.clientRepository.save(cl);
         return PostResponse.builder()
                 .httpStatus(HttpStatus.OK)
-                .link(buildURL(currentPath, cl.getCity().getName()))
+                .link(buildURL(URL_CLIENT, cl.getCity().getName()))
                 .build();
     }
     public PostResponse putPhoneLineInUser(Integer idClient, Integer idPhoneLine) {
@@ -77,7 +78,7 @@ public class ClientService {
         this.clientRepository.save(cl);
         return PostResponse.builder()
                 .httpStatus(HttpStatus.OK)
-                .link(buildURL(currentPath, cl.getPhoneLine().getNumberLine()))
+                .link(buildURL(URL_CLIENT, cl.getPhoneLine().getNumberLine()))
                 .build();
     }
 

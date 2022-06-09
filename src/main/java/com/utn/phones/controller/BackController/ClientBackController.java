@@ -5,6 +5,7 @@ import com.utn.phones.Utils.PostResponse;
 import com.utn.phones.domain.City;
 import com.utn.phones.domain.Client;
 import com.utn.phones.domain.User;
+import com.utn.phones.dto.ClientDto;
 import com.utn.phones.exceptions.*;
 
 import com.utn.phones.service.CityService;
@@ -42,8 +43,8 @@ public class ClientBackController {
     //Agregar cliente /testeOk
     @PostMapping(URL_CLIENT + "/")
     @ResponseStatus(HttpStatus.CREATED)
-    public PostResponse addCient(@RequestBody Client user) throws ElementDoesNotExistsException {
-        return clientService.addClient(user);
+    public PostResponse addCient(@RequestBody Client client) {
+        return clientService.addClient(client);
     }
 
 
@@ -55,11 +56,12 @@ public class ClientBackController {
 
     //Traer client por id
     @GetMapping(path = URL_CLIENT + "/{idClient}")
-    public Client findClientById(Authentication auth, @PathVariable("idClient") final Integer idClient) throws ElementDoesNotExistsException, BadRequestException, DeauthorizedException {
+    public ClientDto findClientById(Authentication auth, @PathVariable("idClient") final Integer idClient) throws ElementDoesNotExistsException, BadRequestException, DeauthorizedException {
         User u = (User) auth.getPrincipal();
         Client c = this.clientService.findByCode(idClient);
+        ClientDto cd =new ClientDto();
         if (c.getUser().equals(u)) {
-            return this.clientService.findByCode(idClient);
+            return ClientDto.to(clientService.findByCode(idClient));
         } else {
             throw new DeauthorizedException();
         }
@@ -72,10 +74,10 @@ public class ClientBackController {
         return clientService.putCityInUser(idClient, idCity);
     }
 
-    //Agregar line a client
+    //Agregar line a client   ojo lo que devuelve
     @PutMapping(path = URL_CLIENT + "/{idClient}" + URL_PHONE_LINE + "/{idLine}")
-    public PostResponse putLineInClient(@PathVariable("idClient") Integer idClient, @PathVariable("IdLine") Integer idLine) throws ElementDoesNotExistsException, BadRequestException {
-        return clientService.putPhoneLineInUser(idClient, idLine);
+    public PostResponse putLineInClient(@PathVariable("idClient") Integer idClient, @PathVariable("idLine") Integer idLine) throws ElementDoesNotExistsException, BadRequestException {
+        return this.clientService.putPhoneLineInUser(idClient, idLine);
     }
 
     //Eliminar cliente
