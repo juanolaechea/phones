@@ -1,23 +1,24 @@
 package com.utn.phones.service;
 
 import com.utn.phones.Utils.PostResponse;
+import com.utn.phones.domain.Call;
 import com.utn.phones.domain.City;
 import com.utn.phones.domain.Client;
 import com.utn.phones.domain.PhoneLine;
-import com.utn.phones.domain.UserType;
+import com.utn.phones.dto.ClientDto;
 import com.utn.phones.exceptions.ElementDoesNotAClient;
 import com.utn.phones.exceptions.ElementDoesNotExistsException;
-import com.utn.phones.exceptions.ValidationClientException;
+import com.utn.phones.persistence.CallRepository;
 import com.utn.phones.persistence.CityRepository;
 import com.utn.phones.persistence.ClientRepository;
 import com.utn.phones.persistence.PhoneLineRepository;
-import com.utn.phones.persistence.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
-import javax.validation.constraints.Null;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,13 +33,14 @@ public class ClientService {
     private final ClientRepository clientRepository;
     private final CityRepository cityRepository;
     private final PhoneLineRepository phoneLineRepository;
-
+    private final CallRepository callRepository;
 
     @Autowired
-    public ClientService(ClientRepository clientRepository, CityRepository cityRepository, PhoneLineRepository phoneLineRepository) {
+    public ClientService(ClientRepository clientRepository, CityRepository cityRepository, PhoneLineRepository phoneLineRepository, CallRepository callRepository) {
         this.clientRepository = clientRepository;
         this.cityRepository = cityRepository;
         this.phoneLineRepository = phoneLineRepository;
+        this.callRepository = callRepository;
     }
 
     //preguntar si es un cliente
@@ -52,8 +54,17 @@ public class ClientService {
 
     }
 
-    public List<Client> findAllClient() {
-        return this.clientRepository.findAll();
+    public List<ClientDto> findAllClient() {
+        List<Client> clients =this.clientRepository.findAll();
+        List<ClientDto>clientDtos= new ArrayList<>();
+        for (Client client1 : clients) {
+
+            ClientDto cdto = ClientDto.to(client1);
+            clientDtos.add(cdto);
+
+        }
+        return clientDtos;
+
     }
 
     public Client findByCode(Integer idClient)throws ElementDoesNotExistsException {
@@ -99,5 +110,10 @@ public class ClientService {
 
     public Client getClientByNumber(PhoneLine phoneLine) {
         return this.clientRepository.findByPhoneLine(phoneLine);
+    }
+
+    public List<Call> getClientByRank(Integer idClient, LocalDate from, LocalDate to) {
+
+        return this.callRepository.findAllByClientBetweenDates(idClient,from,to);
     }
 }

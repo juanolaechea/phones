@@ -24,7 +24,7 @@ public class Bill {
 
     @Column (name = "amount_calls")
      Integer amountCalls;
-    @Column (name = "cost")
+    @Column (name = "total_cost")
      Float cost;
     @Column (name = "total_price")
      Float totalPrice;

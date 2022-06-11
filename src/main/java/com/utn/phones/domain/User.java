@@ -29,10 +29,8 @@ public class User implements UserDetails {
     @Column(name="username")
     String username;
 
-    @JsonIgnore
-    @JsonBackReference
     @Column(name="password")
-    private String password;
+     String password;
 
     @Column (name = "type_user")
     @Enumerated(EnumType.STRING)

@@ -2,6 +2,7 @@ package com.utn.phones.service;
 
 import com.utn.phones.domain.*;
 import com.utn.phones.persistence.CallRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,9 +11,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.sql.Timestamp;
 
 import static java.time.LocalDateTime.now;
-
+@Slf4j
 @Service
 public class CallService {
 
@@ -40,7 +42,6 @@ public class CallService {
         PhoneLine plo = phoneLineService.getPhoneLineByNumberLine(call.getPhoneLineOrigin().getNumberLine());
         PhoneLine pld = phoneLineService.getPhoneLineByNumberLine(call.getPhoneLineDestination().getNumberLine());
         Client c = clientService.getClientByNumber(plo);
-
         call.setCityOrigin(cityOrigin);
         call.setCityDestination(cityDestinatio);
         call.setPriceXmin(t.getPriceXminute());
@@ -52,26 +53,13 @@ public class CallService {
         this.callRepository.save(call);
     }
 
-    public Float totalPrice(Call call,Float precexmin){
+    public Float totalPrice(Call call, Float precexmin) {
         return call.getDuration() * precexmin;
     }
 
-    public List<Call> getAllCalls(){
+    public List<Call> getAllCalls() {
         return this.callRepository.findAll();
     }
 
-    public ArrayList<Call> getAllCallsNotInvoice(){
-        return this.callRepository.findAllNotInvoice();
-    }
-
-
-    public List<Call> getCallByRank(Integer idClient, LocalDateTime from, LocalDateTime to) {
-
-        LocalDateTime ahora=  now();
-
-        //Date fromsql= Date.valueOf(String.valueOf(from));
-       // Date tosql = Date.valueOf(String.valueOf(to));
-
-        return callRepository.findAllByClientBetween(idClient,from,to);
-    }
 }
+

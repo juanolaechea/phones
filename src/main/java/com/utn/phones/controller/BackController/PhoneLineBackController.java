@@ -2,10 +2,7 @@ package com.utn.phones.controller.BackController;
 
 import com.utn.phones.Utils.PostResponse;
 import com.utn.phones.domain.PhoneLine;
-import com.utn.phones.exceptions.DeauthorizedException;
-import com.utn.phones.exceptions.ElementExistsException;
-import com.utn.phones.exceptions.PhoneLineException;
-import com.utn.phones.exceptions.ValidationPhoneLineException;
+import com.utn.phones.exceptions.*;
 import com.utn.phones.service.PhoneLineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -56,8 +53,8 @@ public class PhoneLineBackController {
 
     //Eliminar linea
     @DeleteMapping(path = URL_PHONE_LINE + "/{idPhoneLine}")
-    public void deletePhoneLine(@PathVariable("idPhoneLine") Integer idPhoneLine){
-        this.phoneLineService.deletePhoneLine(idPhoneLine);
+    public PostResponse deletePhoneLine(@PathVariable("idPhoneLine") Integer idPhoneLine) throws ElementDoesNotExistsException{
+        return this.phoneLineService.deletePhoneLine(idPhoneLine);
     }
     //Habilitar linea
     @PutMapping(path = URL_PHONE_LINE + "/enable/{idPhoneLine}")

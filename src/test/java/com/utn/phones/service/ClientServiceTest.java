@@ -2,6 +2,7 @@ package com.utn.phones.service;
 
 import com.utn.phones.Utils.PostResponse;
 import com.utn.phones.domain.*;
+import com.utn.phones.dto.ClientDto;
 import com.utn.phones.exceptions.ElementDoesNotExistsException;
 import com.utn.phones.persistence.CityRepository;
 import com.utn.phones.persistence.ClientRepository;
@@ -102,7 +103,7 @@ public class ClientServiceTest {
         clients.add(aClient());
         Mockito.when(clientRepository.findAll()).thenReturn(clients);
 
-        final List<Client> response = clientService.findAllClient();
+        final List<ClientDto> response = clientService.findAllClient();
         assertNotNull(response);
 
     }

@@ -71,6 +71,19 @@ public class TestUtils {
         return new CallSenderDto("222","222345678","06/02/2018 15:00:00",0x8000000000000000L);
     }
 
+    public static String aTariffJson(){
+        final Gson prettyGson = new GsonBuilder()
+                .registerTypeAdapter(LocalDate.class,new LocalDateSerializer())
+                .registerTypeAdapter(LocalDate.class,new LocalDateDeserializer())
+                .setPrettyPrinting()
+                .create();
+        return prettyGson.toJson(aTariff());
+    }
+
+    public static Tariff aTariff(){
+        return  new Tariff(1, 4.5F,new City(),new City());
+    }
+
 
 
 

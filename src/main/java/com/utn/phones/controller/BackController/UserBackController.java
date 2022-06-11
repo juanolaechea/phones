@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.utn.phones.constants.ControllerConstants.BASE_URL;
 import static com.utn.phones.constants.ControllerConstants.URl_USER;
 
 @Controller
 @RestController
-@RequestMapping("/backoffice/user")
+@RequestMapping(BASE_URL)
 public class UserBackController {
-
 
     UserService userService;
 

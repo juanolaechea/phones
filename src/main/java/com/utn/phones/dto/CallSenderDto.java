@@ -29,7 +29,7 @@ public class CallSenderDto {
         Call call = Call.builder()
                 .phoneLineOrigin(PhoneLineDto.to(new PhoneLineDto(callSenderDto.getOrigin())))
                 .phoneLineDestination(PhoneLineDto.to(new PhoneLineDto(callSenderDto.getDestination())))
-                .dateTime(LocalDateTime.parse(callSenderDto.getDatetime(), DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")))
+                .date(LocalDateTime.parse(callSenderDto.getDatetime(), DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")))
                 .duration(callSenderDto.getDuration())
                 .build();
 

@@ -24,12 +24,6 @@ public class Tariff {
     @Column (name = "id_tariff")
      Integer idTariff;
 
-    @Column (name = "hour_initial")
-    LocalTime hourInitial;
-
-    @Column (name = "hour_finished")
-    LocalTime hourFinished;
-
     @Column (name = "price_x_minute")
     Float priceXminute;
 

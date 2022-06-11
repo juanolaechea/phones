@@ -1,63 +1,46 @@
 package com.utn.phones.controller.WebController;
 
 
-import com.utn.phones.domain.Bill;
 import com.utn.phones.domain.Call;
-import com.utn.phones.domain.Client;
-import com.utn.phones.exceptions.ElementDoesNotExistsException;
-import com.utn.phones.service.BillService;
-import com.utn.phones.service.CallService;
+import com.utn.phones.dto.ClientDto;
+import com.utn.phones.service.CityService;
 import com.utn.phones.service.ClientService;
+import org.hibernate.type.LocalDateType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 
 import static com.utn.phones.constants.ControllerConstants.*;
 
 @Controller
-@RestController(BASE_URL)
+@RestController
+@RequestMapping(BASE_URL)
 public class ClientWebController {
 
     private ClientService clientService;
-    private BillService billService;
-    private CallService callService;
+
 
     @Autowired
-    public ClientWebController(ClientService clientService, BillService billService, CallService callService) {
+    public ClientWebController(ClientService clientService) {
         this.clientService = clientService;
-        this.billService = billService;
-        this.callService = callService;
     }
 
-    /*
-    //Consulta de facturas del usuario logueado por rango de fechas.
-    @GetMapping(path=URL_CLIENT+"/bill/"+"{idClient}")
-    public List<Bill> getBillRankDate(@PathVariable("idClient") Integer idClient,
-                                      @RequestParam @DateTimeFormat(pattern="dd/MM/yyyy HH:mm:ss") LocalDateTime start,
-                                      @RequestParam @DateTimeFormat(pattern="dd/MM/yyyy HH:mm:ss") LocalDateTime end) throws ElementDoesNotExistsException {
-        return billService.getBillByRank(idClient,start,end);
+    @GetMapping(URL_WEB+"/{idClient}")
+    public ResponseEntity<List<Call>> findAllCallByClient(@PathVariable("idClient") Integer idClient,
+                                                          @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate from,
+                                                          @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate to){
+       // LocalDate from ;
+        //from=LocalDate.of(2022,04,20);
+        //LocalDate to ;
+        //to=LocalDate.of(2022,05,20);
 
-    }
-
-     */
-
-    //Consulta de llamadas por usuarios logeados por rango de fecha
-    @GetMapping(path=BASE_web + "/{idClient}")
-    public List<Call> getCallRankDate(@PathVariable("idClient") Integer idClient,
-                                      @RequestParam @DateTimeFormat(pattern="dd/MM/yyyy HH:mm:ss") LocalDateTime from,
-                                      @RequestParam @DateTimeFormat(pattern="dd/MM/yyyy HH:mm:ss") LocalDateTime to
-                                      ) throws ElementDoesNotExistsException {
-        return callService.getCallByRank(idClient,from,to);
-
+        List<Call>calls= this.clientService.getClientByRank(idClient,from,to);
+        return calls.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(calls);
     }
 }

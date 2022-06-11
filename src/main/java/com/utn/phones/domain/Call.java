@@ -41,7 +41,8 @@ public class Call{
     PhoneLine phoneLineDestination;
 
     @Column(name="date")
-    LocalDateTime dateTime;
+    LocalDateTime date;
+
     @Column (name = "duration")
     Long duration;
 

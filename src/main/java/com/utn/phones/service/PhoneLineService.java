@@ -49,8 +49,21 @@ public class PhoneLineService {
                 .orElseThrow(() -> new HttpClientErrorException(HttpStatus.BAD_REQUEST, "PhoneLine not Exists "));
     }
 
-    public void deletePhoneLine(Integer idPhoneLine) {
-        this.phoneLineRepository.deleteById(idPhoneLine);
+    public PostResponse deletePhoneLine(Integer idPhoneLine) {
+
+        if(phoneLineRepository.existsById(idPhoneLine)) {
+            this.phoneLineRepository.deleteById(idPhoneLine);
+            return PostResponse.builder()
+                    .httpStatus(HttpStatus.OK)
+                    .build();
+        }else {
+            throw new ElementDoesNotExistsException();
+        }
+    }
+
+    public PhoneLine getPhoneLineByNumberLine(String numberLine) {
+        return this.phoneLineRepository.findByNumberLine(numberLine);
+
     }
 
     public void enablePhoneLine(Integer idPhoneLine) {
@@ -74,8 +87,5 @@ public class PhoneLineService {
         }
     }
 
-    public PhoneLine getPhoneLineByNumberLine(String numberLine) {
-           return this.phoneLineRepository.findByNumberLine(numberLine);
 
-    }
 }
