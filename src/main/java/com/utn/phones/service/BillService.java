@@ -18,10 +18,7 @@ public class BillService {
         this.billRepository = billRepository;
     }
 
-    public List<Bill> getBillByRank(Integer idClient, LocalDateTime start, LocalDateTime end) {
 
-        return billRepository.findBillByRank(idClient,start,end);
-    }
 
 
 }

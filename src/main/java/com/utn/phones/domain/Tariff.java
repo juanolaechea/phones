@@ -10,6 +10,7 @@ import org.hibernate.annotations.FetchMode;
 import javax.persistence.*;
 import java.lang.reflect.Array;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -37,6 +38,9 @@ public class Tariff {
     @JoinColumn(name = "id_city_destination")
     @Fetch(FetchMode.JOIN)
      City cityDestination;
+
+    @OneToMany(mappedBy = "tariff")
+    List<Band> bands = new ArrayList<Band>();
 
 
 }

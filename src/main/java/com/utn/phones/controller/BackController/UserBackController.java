@@ -2,17 +2,17 @@ package com.utn.phones.controller.BackController;
 
 
 import com.utn.phones.Utils.PostResponse;
+import com.utn.phones.domain.PhoneLine;
+import com.utn.phones.domain.Tariff;
 import com.utn.phones.domain.User;
 import com.utn.phones.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import static com.utn.phones.constants.ControllerConstants.BASE_URL;
-import static com.utn.phones.constants.ControllerConstants.URl_USER;
+import java.util.List;
+
+import static com.utn.phones.constants.ControllerConstants.*;
 
 @Controller
 @RestController
@@ -29,5 +29,13 @@ public class UserBackController {
     @PostMapping(path= URl_USER+"/")
     public PostResponse addUser(@RequestBody User user){
         return userService.addUser(user);
+    }
+
+    @GetMapping(path = URl_USER +"/")
+    public List<User> findAllUser(){return this.userService.getAllUser();}
+
+    @GetMapping(path = URl_USER + "/{idUser}")
+    public User getPhoneLineById(@PathVariable("idUser") Integer idUser) {
+        return this.userService.findByCode(idUser);
     }
 }

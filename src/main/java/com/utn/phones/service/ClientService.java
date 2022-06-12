@@ -1,29 +1,25 @@
 package com.utn.phones.service;
 
 import com.utn.phones.Utils.PostResponse;
-import com.utn.phones.domain.Call;
-import com.utn.phones.domain.City;
-import com.utn.phones.domain.Client;
-import com.utn.phones.domain.PhoneLine;
+import com.utn.phones.domain.*;
+import com.utn.phones.dto.BillDto;
 import com.utn.phones.dto.ClientDto;
 import com.utn.phones.exceptions.ElementDoesNotAClient;
 import com.utn.phones.exceptions.ElementDoesNotExistsException;
-import com.utn.phones.persistence.CallRepository;
-import com.utn.phones.persistence.CityRepository;
-import com.utn.phones.persistence.ClientRepository;
-import com.utn.phones.persistence.PhoneLineRepository;
+import com.utn.phones.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.utn.phones.Utils.EntityURLBuilder.buildURL;
 import static com.utn.phones.constants.ControllerConstants.URL_CLIENT;
+import static com.utn.phones.constants.ControllerConstants.URl_USER;
 
 @Service
 public class ClientService {
@@ -34,13 +30,18 @@ public class ClientService {
     private final CityRepository cityRepository;
     private final PhoneLineRepository phoneLineRepository;
     private final CallRepository callRepository;
+    private final BillRepository billRepository;
+    private final UserRepository userRepository;
+
 
     @Autowired
-    public ClientService(ClientRepository clientRepository, CityRepository cityRepository, PhoneLineRepository phoneLineRepository, CallRepository callRepository) {
+    public ClientService(ClientRepository clientRepository, CityRepository cityRepository, PhoneLineRepository phoneLineRepository, CallRepository callRepository, BillRepository billRepository, UserRepository userRepository) {
         this.clientRepository = clientRepository;
         this.cityRepository = cityRepository;
         this.phoneLineRepository = phoneLineRepository;
         this.callRepository = callRepository;
+        this.billRepository = billRepository;
+        this.userRepository = userRepository;
     }
 
     //preguntar si es un cliente
@@ -115,5 +116,28 @@ public class ClientService {
     public List<Call> getClientByRank(Integer idClient, LocalDate from, LocalDate to) {
 
         return this.callRepository.findAllByClientBetweenDates(idClient,from,to);
+    }
+
+    public List<BillDto> getBillsByRank(Integer idClient, LocalDate from, LocalDate to) {
+
+        List<Bill> bills=this.billRepository.findAllByClientBetweenDates(idClient,from,to);
+        List<BillDto>billDtos=new ArrayList<>();
+        for (Bill bill1 : bills) {
+
+            BillDto billDto = BillDto.to(bill1);
+            billDtos.add(billDto);
+
+        }
+        return billDtos;
+    }
+
+    public PostResponse putUserInClient(Integer idClient, Integer idUser) {
+        Client cl = this.clientRepository.getById(idClient);
+        cl.setUser(this.userRepository.findByIdUser(idUser));
+        this.clientRepository.save(cl);
+        return PostResponse.builder()
+                .httpStatus(HttpStatus.OK)
+                .link(buildURL(URl_USER, cl.getUser().getUsername()))
+                .build();
     }
 }

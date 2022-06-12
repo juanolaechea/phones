@@ -1,7 +1,9 @@
 package com.utn.phones.controller.WebController;
 
 
+import com.utn.phones.domain.Bill;
 import com.utn.phones.domain.Call;
+import com.utn.phones.dto.BillDto;
 import com.utn.phones.dto.ClientDto;
 import com.utn.phones.service.CityService;
 import com.utn.phones.service.ClientService;
@@ -31,16 +33,26 @@ public class ClientWebController {
         this.clientService = clientService;
     }
 
-    @GetMapping(URL_WEB+"/{idClient}")
-    public ResponseEntity<List<Call>> findAllCallByClient(@PathVariable("idClient") Integer idClient,
+
+    @GetMapping(URL_WEB+"/bill"+"/{idClient}")
+    public ResponseEntity<List<BillDto>> findAllBillByClientRank(@PathVariable("idClient") Integer idClient,
                                                           @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate from,
                                                           @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate to){
-       // LocalDate from ;
-        //from=LocalDate.of(2022,04,20);
-        //LocalDate to ;
-        //to=LocalDate.of(2022,05,20);
+        List<BillDto>bills= this.clientService.getBillsByRank(idClient,from,to);
+        return bills.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(bills);
+    }
 
+
+    //Falta AUTH
+    @GetMapping(URL_WEB+"/{idClient}")
+    public ResponseEntity<List<Call>> findAllCallByClientRank(@PathVariable("idClient") Integer idClient,
+                                                          @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate from,
+                                                          @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate to){
         List<Call>calls= this.clientService.getClientByRank(idClient,from,to);
         return calls.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(calls);
     }
+
+
+
+
 }

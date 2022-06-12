@@ -12,5 +12,6 @@ public class ControllerConstants {
     public static final String URL_CALL="/calls";
     public static final String URl_USER = "/user";
     public static final String URL_WEB = "/web";
+    public static final String URL_BAND="/band";
 
 }

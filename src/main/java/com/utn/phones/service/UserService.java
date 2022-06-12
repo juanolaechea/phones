@@ -41,4 +41,13 @@ public class UserService implements UserDetailsService {
                 .link(buildURL(currentPath, u.getUsername().toString()))
                 .build();
     }
+
+    public List<User> getAllUser() {
+        return this.userRepository.findAll();
+    }
+
+    public User findByCode(Integer idUser) {
+
+        return this.userRepository.findByIdUser(idUser);
+    }
 }

@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 
 
 public class TestUtils {
@@ -81,7 +82,7 @@ public class TestUtils {
     }
 
     public static Tariff aTariff(){
-        return  new Tariff(1, 4.5F,new City(),new City());
+        return  new Tariff(1, 4.5F,new City(),new City(),new ArrayList<Band>());
     }
 
 

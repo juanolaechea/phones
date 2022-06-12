@@ -6,12 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.sql.Timestamp;
+import java.util.Timer;
 
 import static java.time.LocalDateTime.now;
 @Slf4j
@@ -24,28 +21,33 @@ public class CallService {
     private PhoneLineService phoneLineService;
     private TariffService tariffService;
     private ClientService clientService;
+    private BandService bandService;
 
-    @Autowired
-    public CallService(CallRepository callRepository, CityService cityService, PhoneLineService phoneLineService, TariffService tariffService, ClientService clientService) {
+
+    public CallService(CallRepository callRepository, CityService cityService, PhoneLineService phoneLineService, TariffService tariffService, ClientService clientService, BandService bandService) {
         this.callRepository = callRepository;
         this.cityService = cityService;
         this.phoneLineService = phoneLineService;
         this.tariffService = tariffService;
         this.clientService = clientService;
+        this.bandService = bandService;
     }
 
     public void newCall(Call call) {
         City cityOrigin = cityService.getCodeByNumber(call.getPhoneLineOrigin().getNumberLine());
         City cityDestinatio = cityService.getCodeByNumber(call.getPhoneLineDestination().getNumberLine());
         Tariff t = tariffService.getTariffByCities(cityOrigin.getCode(), cityDestinatio.getCode());
+        Integer h= call.getDate().getHour();
+        Float band = bandService.getAllBandByTariff(t.getIdTariff(),h);
         Float totalPrice = totalPrice(call, t.getPriceXminute());
+        Float totalPriceBand = totalPrice  + (totalPrice * band);
         PhoneLine plo = phoneLineService.getPhoneLineByNumberLine(call.getPhoneLineOrigin().getNumberLine());
         PhoneLine pld = phoneLineService.getPhoneLineByNumberLine(call.getPhoneLineDestination().getNumberLine());
         Client c = clientService.getClientByNumber(plo);
         call.setCityOrigin(cityOrigin);
         call.setCityDestination(cityDestinatio);
         call.setPriceXmin(t.getPriceXminute());
-        call.setTotalPrice(totalPrice);
+        call.setTotalPrice(totalPriceBand);
         call.setPhoneLineOrigin(plo);
         call.setPhoneLineDestination(pld);
         call.setClient(c);

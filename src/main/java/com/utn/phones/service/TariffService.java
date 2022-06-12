@@ -1,18 +1,23 @@
 package com.utn.phones.service;
 
+import com.utn.phones.domain.Band;
 import com.utn.phones.domain.City;
 import com.utn.phones.domain.Tariff;
+import com.utn.phones.persistence.BandRepository;
 import com.utn.phones.persistence.TariffRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class TariffService {
 
     private TariffRepository tariffRepository;
     private CityService cityService;
+    private BandRepository bandRepository;
 
     @Autowired
     public TariffService(TariffRepository tariffRepository, CityService cityService) {
@@ -32,4 +37,9 @@ public class TariffService {
          Tariff t = this.tariffRepository.findByCityOriginAndCityDestination(o,d);
          return t;
     }
+
+
+
+
+
 }

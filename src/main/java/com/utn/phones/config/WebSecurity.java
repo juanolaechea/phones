@@ -45,6 +45,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/client").hasAuthority(UserType.client.toString())
                 .antMatchers("/api/client").hasAuthority(UserType.Employee.toString())
                 .antMatchers("/api/user").hasAuthority(UserType.Employee.toString())
+                .antMatchers("/api/tariff").hasAuthority(UserType.Employee.toString())
                 .antMatchers("/api/phoneLine").permitAll()
                 .antMatchers("/api/web").hasAuthority(UserType.Employee.toString())
                 .anyRequest().authenticated()

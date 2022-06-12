@@ -82,6 +82,12 @@ public class ClientBackController {
         return this.clientService.putPhoneLineInUser(idClient, idLine);
     }
 
+    @PutMapping(path = URL_CLIENT + "/{idClient}" + URl_USER + "/{idUser}")
+    public PostResponse putUserInClient(@PathVariable("idClient") Integer idClient, @PathVariable("idUser") Integer idUser) throws ElementDoesNotExistsException, BadRequestException {
+        return this.clientService.putUserInClient(idClient, idUser);
+    }
+
+
     //Eliminar cliente
     @DeleteMapping(path = URL_CLIENT + "/{idClient}")
     public PostResponse deleteClientById(@PathVariable("idClient") Integer idClient) throws ElementDoesNotExistsException  {
