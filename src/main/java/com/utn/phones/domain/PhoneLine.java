@@ -1,5 +1,6 @@
 package com.utn.phones.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -33,6 +34,7 @@ public class PhoneLine {
     private PhoneLineType lineType;
 
 
+    @JsonIgnore
     @OneToMany(orphanRemoval = true)
     @JoinColumn(name = "phone_line_id_line")
     List<Bill> bills = new ArrayList<>();

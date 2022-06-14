@@ -5,6 +5,7 @@ import com.utn.phones.Utils.PostResponse;
 import com.utn.phones.Utils.TestUtils;
 import com.utn.phones.domain.Client;
 import com.utn.phones.domain.PhoneLine;
+import com.utn.phones.exceptions.ElementDoesNotExistsException;
 import com.utn.phones.persistence.PhoneLineRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -27,7 +29,7 @@ import static com.utn.phones.Utils.TestUtils.aClient;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static com.utn.phones.Utils.TestUtils.aPhoneLine;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
@@ -89,7 +91,7 @@ public class PhoneLineServiceTest {
     }
 
     @Test
-    public void deletePhoneLine(){
+    public void deletePhoneLine()throws Exception{
         MockHttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
 
@@ -100,6 +102,7 @@ public class PhoneLineServiceTest {
         final PostResponse response = phoneLineService.deletePhoneLine(id);
         assertEquals(OK,response.getHttpStatus());
     }
+
     @Test
     public void getPhoneLineByNumberLine(){
         MockHttpServletRequest request = new MockHttpServletRequest();

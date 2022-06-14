@@ -53,23 +53,4 @@ public class CallBackControllTest extends Abstrascttest{
                 .getResponse()
                 .getStatus(),"Is should be 201");
     }
-
-
-
-
-
-
-
-
-    /*
-
-    @PostMapping(URL_CALL )
-    public ResponseEntity newCall(@RequestBody CallSenderDto callSenderDto){
-        this.callService.newCall(CallSenderDto.to(callSenderDto));11
-        return ResponseEntity.status(HttpStatus.OK).build();
-    }
-
-     */
-
-
 }

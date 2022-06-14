@@ -24,11 +24,9 @@ public class BandService {
     public  Float getAllBandByTariff(Integer idTariff,Integer hourIni){
         Float response= Float.valueOf(0);
         List<Band> brands = bandRepository.findAllByTariff(idTariff);
-
         for (Band brand : brands) {
             response=getPriceByHour(brand.getIdBand(),hourIni);
         }
-
         return response;
 
     }

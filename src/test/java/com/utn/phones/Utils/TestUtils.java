@@ -3,14 +3,12 @@ package com.utn.phones.Utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.utn.phones.domain.*;
+import com.utn.phones.dto.BillDto;
 import com.utn.phones.dto.CallSenderDto;
-import com.utn.phones.service.PhoneLineService;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
 
 
 public class TestUtils {
@@ -27,6 +25,20 @@ public class TestUtils {
 
     public static Client aClient() {
         return new Client(1,"juan","OLaecvhea",12345, UserType.valueOf("client"),new City(),new User(),new PhoneLine(),new ArrayList<Bill>(),new ArrayList<Call>());
+
+    }
+
+    public static String aEmployeeJson() {
+        final Gson prettyGson = new GsonBuilder()
+                .registerTypeAdapter(LocalDate.class, new LocalDateSerializer())
+                .registerTypeAdapter(LocalDate.class, new LocalDateDeserializer())
+                .setPrettyPrinting()
+                .create();
+        return prettyGson.toJson(aEmployee());
+    }
+
+    public static Employee aEmployee() {
+        return new Employee(1,"juan","OLaecvhea",12345, UserType.valueOf("client"),new User());
 
     }
 
@@ -83,6 +95,20 @@ public class TestUtils {
 
     public static Tariff aTariff(){
         return  new Tariff(1, 4.5F,new City(),new City(),new ArrayList<Band>());
+    }
+
+
+    public static String aUserJson(){
+        final Gson prettyGson = new GsonBuilder()
+                .registerTypeAdapter(LocalDate.class,new LocalDateSerializer())
+                .registerTypeAdapter(LocalDate.class,new LocalDateDeserializer())
+                .setPrettyPrinting()
+                .create();
+        return prettyGson.toJson(aUser());
+    }
+
+    public static User aUser(){
+        return  new User(1,"juan","1234",UserType.client);
     }
 
 

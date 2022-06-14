@@ -4,11 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.utn.phones.Utils.LocalDateDeserializer;
 import com.utn.phones.Utils.LocalDateSerializer;
+import com.utn.phones.Utils.PostResponse;
 import com.utn.phones.controller.BackController.PhoneLineBackController;
 import com.utn.phones.domain.Bill;
 import com.utn.phones.domain.PhoneLine;
 import com.utn.phones.domain.PhoneLineType;
 import com.utn.phones.domain.Client;
+import com.utn.phones.dto.ClientDto;
 import com.utn.phones.service.PhoneLineService;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,9 +22,11 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.utn.phones.Utils.TestUtils.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(classes = PhoneLineBackController.class)
@@ -56,6 +60,9 @@ public class PhoneLineBackControllerTest extends Abstrascttest{
     }
     @Test //ok
     public void getAll()throws Exception{
+        List<PhoneLine> phoneLines = new ArrayList<>();
+        phoneLines.add(aPhoneLine());
+        when(phoneLineService.getAll()).thenReturn(phoneLines);
         final  ResultActions resultActions = givenController().perform(MockMvcRequestBuilders
                         .get("/api/phoneLine/")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -64,7 +71,19 @@ public class PhoneLineBackControllerTest extends Abstrascttest{
     }
 
     @Test //ok
+    public void getAllNoContent()throws Exception{
+        List<PhoneLine> phoneLines = new ArrayList<>();
+        when(phoneLineService.getAll()).thenReturn(phoneLines);
+        final  ResultActions resultActions = givenController().perform(MockMvcRequestBuilders
+                        .get("/api/phoneLine/")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+        assertEquals(HttpStatus.NO_CONTENT.value(),resultActions.andReturn().getResponse().getStatus());
+    }
+
+    @Test //ok
     public void getPhoneLineById()throws Exception {
+        when(phoneLineService.findByCode(aPhoneLine().getIdLine())).thenReturn(aPhoneLine());
         final ResultActions resultActions = givenController().perform(MockMvcRequestBuilders
                         .get("/api/phoneLine/1")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -83,6 +102,7 @@ public class PhoneLineBackControllerTest extends Abstrascttest{
     }
     @Test //ok
     public void deletePhoneLine()throws Exception {
+        when(phoneLineService.deletePhoneLine(aPhoneLine().getIdLine())).thenReturn(PostResponse.builder().httpStatus(HttpStatus.OK).build());
         final ResultActions resultActions = givenController().perform(MockMvcRequestBuilders
                         .delete("/api/phoneLine/1")
                         .contentType(MediaType.APPLICATION_JSON))

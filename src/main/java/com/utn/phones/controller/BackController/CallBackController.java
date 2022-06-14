@@ -27,7 +27,7 @@ public class CallBackController {
         this.callService = callService;
     }
 
-    @PostMapping(URL_CALL )
+    @PostMapping(URL_CALL )//testok
     public ResponseEntity newCall(@RequestBody CallSenderDto callSenderDto){
         this.callService.newCall(CallSenderDto.to(callSenderDto));
         return ResponseEntity.status(HttpStatus.OK).build();

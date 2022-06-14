@@ -42,7 +42,7 @@ public class ClientBackController {
     }
 
     //Agregar cliente /testeOk
-    @PostMapping(URL_CLIENT + "/")
+    @PostMapping(URL_CLIENT)
     @ResponseStatus(HttpStatus.CREATED)
     public PostResponse addCient(@RequestBody Client client) {
         return clientService.addClient(client);
@@ -58,15 +58,9 @@ public class ClientBackController {
 
     //Traer client por id
     @GetMapping(path = URL_CLIENT + "/{idClient}")
-    public ClientDto findClientById(Authentication auth, @PathVariable("idClient") final Integer idClient) throws ElementDoesNotExistsException, BadRequestException, DeauthorizedException {
-        User u = (User) auth.getPrincipal();
-        Client c = this.clientService.findByCode(idClient);
-        ClientDto cd =new ClientDto();
-        if (c.getUser().equals(u)) {
-            return ClientDto.to(clientService.findByCode(idClient));
-        } else {
-            throw new DeauthorizedException();
-        }
+    public ClientDto findClientById( @PathVariable("idClient") Integer idClient) throws ElementDoesNotExistsException, BadRequestException{
+
+        return ClientDto.to(this.clientService.findByCode(idClient));
 
     }
 
@@ -93,16 +87,5 @@ public class ClientBackController {
     public PostResponse deleteClientById(@PathVariable("idClient") Integer idClient) throws ElementDoesNotExistsException  {
         return this.clientService.deleteClient(idClient);
     }
-
-    @GetMapping(URL_WEB)
-    public List<Call> findAllCallDate() {
-        return callService.getAllCalls();
-    }
-
-
-
-
-
-
 
 }

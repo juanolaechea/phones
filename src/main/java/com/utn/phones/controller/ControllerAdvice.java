@@ -17,7 +17,7 @@ public class ControllerAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ElementDoesNotExistsException.class)
     public ResponseEntity processEntityDoesNotExists() {
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @ExceptionHandler(ElementExistsException.class)

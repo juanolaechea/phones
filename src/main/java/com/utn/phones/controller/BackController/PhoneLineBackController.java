@@ -42,9 +42,11 @@ public class PhoneLineBackController {
     }
     //Traer todas las lineas
     @GetMapping(path = URL_PHONE_LINE +"/")
-    public List<PhoneLine> getAll( )  {
-        return phoneLineService.getAll();
+    public  ResponseEntity<List<PhoneLine> > getAll( )  {
+        List<PhoneLine>phoneLines = this.phoneLineService.getAll();
+        return phoneLines.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(phoneLines);
     }
+
     //Buscar linea por id
     @GetMapping(path = URL_PHONE_LINE + "/{idPhoneLine}")
     public PhoneLine getPhoneLineById(@PathVariable("idPhoneLine") Integer idPhoneLine) {
@@ -76,11 +78,14 @@ public class PhoneLineBackController {
         }
     }
 
+    /*
     //Traert linea por numero No testear es para probar
     @GetMapping(path= URL_PHONE_LINE +"/find/" )
     public PhoneLine getPhoneLineByNumberLine(@RequestParam String numberLine){
         return this.phoneLineService.getPhoneLineByNumberLine(numberLine);
     }
+
+     */
 
 
 
