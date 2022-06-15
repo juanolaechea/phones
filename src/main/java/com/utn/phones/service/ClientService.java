@@ -31,17 +31,16 @@ public class ClientService {
     private final PhoneLineRepository phoneLineRepository;
     private final CallRepository callRepository;
     private final BillRepository billRepository;
-    private final UserRepository userRepository;
-
+    private final UserService userService;
 
     @Autowired
-    public ClientService(ClientRepository clientRepository, CityRepository cityRepository, PhoneLineRepository phoneLineRepository, CallRepository callRepository, BillRepository billRepository, UserRepository userRepository) {
+    public ClientService(ClientRepository clientRepository, CityRepository cityRepository, PhoneLineRepository phoneLineRepository, CallRepository callRepository, BillRepository billRepository, UserService userService) {
         this.clientRepository = clientRepository;
         this.cityRepository = cityRepository;
         this.phoneLineRepository = phoneLineRepository;
         this.callRepository = callRepository;
         this.billRepository = billRepository;
-        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     //preguntar si es un cliente
@@ -96,16 +95,12 @@ public class ClientService {
 
 
 
-    public PostResponse deleteClient(Integer idClient) throws ElementDoesNotExistsException {
-        if(clientRepository.existsById(idClient)) {
+    public void deleteClient(Integer idClient) throws ElementDoesNotExistsException {
+       try {
             this.clientRepository.deleteById(idClient);
-            return PostResponse.builder()
-                    .httpStatus(HttpStatus.OK)
-                    .build();
-        }else {
-            throw new ElementDoesNotExistsException();
-        }
-
+       }catch ( ElementDoesNotExistsException e){
+           throw new ElementDoesNotExistsException();
+       }
     }
 
 
@@ -114,7 +109,6 @@ public class ClientService {
     }
 
     public List<Call> getClientByRank(Integer idClient, LocalDate from, LocalDate to) {
-
         return this.callRepository.findAllByClientBetweenDates(idClient,from,to);
     }
 
@@ -123,17 +117,15 @@ public class ClientService {
         List<Bill> bills=this.billRepository.findAllByClientBetweenDates(idClient,from,to);
         List<BillDto>billDtos=new ArrayList<>();
         for (Bill bill1 : bills) {
-
             BillDto billDto = BillDto.to(bill1);
             billDtos.add(billDto);
-
         }
         return billDtos;
     }
 
     public PostResponse putUserInClient(Integer idClient, Integer idUser) {
         Client cl = this.clientRepository.getById(idClient);
-        cl.setUser(this.userRepository.findByIdUser(idUser));
+        cl.setUser(this.userService.findByCode(idUser));
         this.clientRepository.save(cl);
         return PostResponse.builder()
                 .httpStatus(HttpStatus.OK)

@@ -1,4 +1,4 @@
-package com.utn.phones.controller.WebController;
+package com.utn.phones.controller.BackController;
 
 
 import com.utn.phones.domain.Bill;
@@ -54,13 +54,20 @@ public class ClientWebController {
     }
 
 
-    //Falta AUTH
+    //
     @GetMapping(URL_WEB+"/{idClient}")
-    public ResponseEntity<List<Call>> findAllCallByClientRank(@PathVariable("idClient") Integer idClient,
+    public ResponseEntity<List<Call>> findAllCallByClientRank(Authentication auth,@PathVariable("idClient") Integer idClient,
                                                           @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate from,
                                                           @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate to){
-        List<Call>calls= this.clientService.getClientByRank(idClient,from,to);
-        return calls.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(calls);
+
+        String username=clientService.findByCode(idClient).getUser().getUsername();
+        User u = (User) auth.getPrincipal();
+        if(u.getUsername().equals(username)){
+            List<Call>calls= this.clientService.getClientByRank(idClient,from,to);
+            return calls.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(calls);
+        }else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
     }
 
 

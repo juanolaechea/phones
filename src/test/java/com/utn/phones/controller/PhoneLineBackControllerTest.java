@@ -102,13 +102,11 @@ public class PhoneLineBackControllerTest extends Abstrascttest{
     }
     @Test //ok
     public void deletePhoneLine()throws Exception {
-        when(phoneLineService.deletePhoneLine(aPhoneLine().getIdLine())).thenReturn(PostResponse.builder().httpStatus(HttpStatus.OK).build());
-        final ResultActions resultActions = givenController().perform(MockMvcRequestBuilders
+        final  ResultActions resultActions = givenController().perform(MockMvcRequestBuilders
                         .delete("/api/phoneLine/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
-
-        assertEquals(HttpStatus.OK.value(), resultActions.andReturn().getResponse().getStatus());
+        assertEquals(HttpStatus.OK.value(),resultActions.andReturn().getResponse().getStatus());
     }
 
 

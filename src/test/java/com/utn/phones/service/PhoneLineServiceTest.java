@@ -26,9 +26,10 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.utn.phones.Utils.TestUtils.aClient;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static com.utn.phones.Utils.TestUtils.aPhoneLine;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.*;
 import static org.springframework.http.HttpStatus.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -90,17 +91,23 @@ public class PhoneLineServiceTest {
         assertNotNull(response, "Should be not null.");
     }
 
+
     @Test
     public void deletePhoneLine()throws Exception{
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+        doNothing().when(phoneLineRepository).deleteById(anyInt());
 
-        Integer id=1;
-        Mockito.when(phoneLineRepository.existsById(1)).thenReturn(true);
-        PostResponse reaponse =phoneLineService.deletePhoneLine(id);
+        assertDoesNotThrow(() -> phoneLineService.deletePhoneLine(1));
 
-        final PostResponse response = phoneLineService.deletePhoneLine(id);
-        assertEquals(OK,response.getHttpStatus());
+        verify(phoneLineRepository, times(1)).deleteById(anyInt());
+    }
+
+    @Test
+    public void deletePhoneLineThrows()throws Exception{
+        doThrow(ElementDoesNotExistsException.class).when(phoneLineRepository).deleteById(anyInt());
+
+        assertThrows(ElementDoesNotExistsException.class,() -> phoneLineService.deletePhoneLine(1));
+
+        verify(phoneLineRepository, times(1)).deleteById(anyInt());
     }
 
     @Test

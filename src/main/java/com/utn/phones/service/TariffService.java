@@ -33,12 +33,9 @@ public class TariffService {
     public Tariff getTariffByCities(String codeO, String codeD){
         City o= this.cityService.findByCode(codeO);
         City d= this.cityService.findByCode(codeD);
+         return this.tariffRepository.findByCityOriginAndCityDestination(o,d);
 
-         Tariff t = this.tariffRepository.findByCityOriginAndCityDestination(o,d);
-         return t;
     }
-
-
 
 
 

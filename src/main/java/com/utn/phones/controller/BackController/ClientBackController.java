@@ -84,8 +84,8 @@ public class ClientBackController {
 
     //Eliminar cliente
     @DeleteMapping(path = URL_CLIENT + "/{idClient}")
-    public PostResponse deleteClientById(@PathVariable("idClient") Integer idClient) throws ElementDoesNotExistsException  {
-        return this.clientService.deleteClient(idClient);
+    public void deleteClientById(@PathVariable("idClient") Integer idClient) throws ElementDoesNotExistsException  {
+        this.clientService.deleteClient(idClient);
     }
 
 }

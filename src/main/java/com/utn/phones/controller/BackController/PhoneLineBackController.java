@@ -55,8 +55,8 @@ public class PhoneLineBackController {
 
     //Eliminar linea
     @DeleteMapping(path = URL_PHONE_LINE + "/{idPhoneLine}")
-    public PostResponse deletePhoneLine(@PathVariable("idPhoneLine") Integer idPhoneLine) throws ElementDoesNotExistsException{
-        return this.phoneLineService.deletePhoneLine(idPhoneLine);
+    public void deletePhoneLine(@PathVariable("idPhoneLine") Integer idPhoneLine) throws ElementDoesNotExistsException{
+         this.phoneLineService.deletePhoneLine(idPhoneLine);
     }
     //Habilitar linea
     @PutMapping(path = URL_PHONE_LINE + "/enable/{idPhoneLine}")
@@ -78,14 +78,6 @@ public class PhoneLineBackController {
         }
     }
 
-    /*
-    //Traert linea por numero No testear es para probar
-    @GetMapping(path= URL_PHONE_LINE +"/find/" )
-    public PhoneLine getPhoneLineByNumberLine(@RequestParam String numberLine){
-        return this.phoneLineService.getPhoneLineByNumberLine(numberLine);
-    }
-
-     */
 
 
 

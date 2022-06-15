@@ -2,7 +2,10 @@ package com.utn.phones.service;
 
 
 import com.utn.phones.Utils.PostResponse;
+import com.utn.phones.domain.Call;
 import com.utn.phones.domain.Client;
+import com.utn.phones.domain.PhoneLine;
+import com.utn.phones.dto.CallSenderDto;
 import com.utn.phones.persistence.CallRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,7 +19,10 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import static com.utn.phones.Utils.TestUtils.aClient;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.utn.phones.Utils.TestUtils.*;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(MockitoExtension.class)
@@ -37,15 +43,26 @@ public class CallServiceTest {
     @Mock
      ClientService clientService;
 
-    /*
-    @Test
-    public void newCall() {
 
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-        Mockito.when(clientService.addClient(aClient())).thenReturn(PostResponse.builder().build());
+
+
+
+    @Test
+    public void totalPrice(){
+        float v =  aCallDto().getDuration() * 10;
+        assertNotNull(v);
     }
 
-     */
+    @Test
+    public void getAll(){
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+
+        List<Call> calls= new ArrayList<>();
+        calls.add(CallSenderDto.to(aCallDto()));
+
+        final List<Call> response = callService.getAllCalls();
+        assertNotNull(response);
+    }
 
 }

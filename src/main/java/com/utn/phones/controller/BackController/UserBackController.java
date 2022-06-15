@@ -40,7 +40,7 @@ public class UserBackController {
     }
 
     @GetMapping(path = URl_USER + "/{idUser}")
-    public User getPhoneLineById(@PathVariable("idUser") Integer idUser) {
+    public User getById(@PathVariable("idUser") Integer idUser) {
         return this.userService.findByCode(idUser);
     }
 }

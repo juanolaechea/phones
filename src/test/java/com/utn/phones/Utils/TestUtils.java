@@ -81,7 +81,21 @@ public class TestUtils {
 
     public static CallSenderDto aCallDto() {
 
-        return new CallSenderDto("222","222345678","06/02/2018 15:00:00",0x8000000000000000L);
+        return new CallSenderDto("222","222345678","06/05/2022 15:00:00",0x8000000000000000L);
+    }
+
+    public static String aCallJson(){
+        final Gson prettyGson = new GsonBuilder()
+                .registerTypeAdapter(LocalDate.class,new LocalDateSerializer())
+                .registerTypeAdapter(LocalDate.class,new LocalDateDeserializer())
+                .setPrettyPrinting()
+                .create();
+        return prettyGson.toJson(aCall());
+    }
+
+    public static Call aCall(){
+        return  new Call(1,new PhoneLine(),new PhoneLine(),LocalDateTime.of(2022,05,05,10,00,00)
+                ,0x8000000000000000L,2.3F,3.4F,true,new City(),new City(),new Client());
     }
 
     public static String aTariffJson(){
@@ -112,6 +126,18 @@ public class TestUtils {
     }
 
 
+    public static String aUserBand(){
+        final Gson prettyGson = new GsonBuilder()
+                .registerTypeAdapter(LocalDate.class,new LocalDateSerializer())
+                .registerTypeAdapter(LocalDate.class,new LocalDateDeserializer())
+                .setPrettyPrinting()
+                .create();
+        return prettyGson.toJson(aBand());
+    }
+
+    public static Band aBand(){
+        return  new Band(4,10,20,0.3F,new Tariff());
+    }
 
 
 

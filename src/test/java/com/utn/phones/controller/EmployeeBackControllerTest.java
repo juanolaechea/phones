@@ -4,21 +4,15 @@ package com.utn.phones.controller;
 import com.utn.phones.Utils.PostResponse;
 import com.utn.phones.controller.BackController.EmployeeBackController;
 import com.utn.phones.domain.Employee;
-import com.utn.phones.dto.ClientDto;
-import com.utn.phones.exceptions.ElementExistsException;
 import com.utn.phones.service.EmployeeService;
-import jdk.jshell.spi.ExecutionControl;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 

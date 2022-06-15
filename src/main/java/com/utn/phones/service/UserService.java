@@ -47,7 +47,6 @@ public class UserService implements UserDetailsService {
     }
 
     public User findByCode(Integer idUser) {
-
-        return this.userRepository.findByIdUser(idUser);
+        return this.userRepository.getById(idUser);
     }
 }

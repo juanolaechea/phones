@@ -6,6 +6,8 @@ import com.utn.phones.dto.ClientDto;
 import com.utn.phones.exceptions.ElementDoesNotExistsException;
 import com.utn.phones.persistence.CityRepository;
 import com.utn.phones.persistence.ClientRepository;
+import com.utn.phones.persistence.PhoneLineRepository;
+import com.utn.phones.persistence.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -19,13 +21,16 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.utn.phones.Utils.TestUtils.aCity;
-import static com.utn.phones.Utils.TestUtils.aClient;
+import static com.utn.phones.Utils.TestUtils.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.*;
 import static org.springframework.http.HttpStatus.*;
 
 
@@ -42,6 +47,12 @@ public class ClientServiceTest {
 
     @Mock
     CityRepository cityRepository;
+
+    @Mock
+    PhoneLineRepository phoneLineRepository;
+
+    @Mock
+    UserService userService ;
 
     @Test
     public void addClient() {
@@ -130,25 +141,70 @@ public class ClientServiceTest {
 
     @Test
     public void deleteClient() throws ElementDoesNotExistsException {
+        doNothing().when(clientRepository).deleteById(anyInt());
+
+        assertDoesNotThrow(() -> clientService.deleteClient(1));
+
+        verify(clientRepository, times(1)).deleteById(anyInt());
+    }
+    @Test
+    void deleteClientThrows() {
+        doThrow(ElementDoesNotExistsException.class).when(clientRepository).deleteById(anyInt());
+
+        assertThrows(ElementDoesNotExistsException.class,() -> clientService.deleteClient(1));
+
+        verify(clientRepository, times(1)).deleteById(anyInt());
+    }
+
+    @Test
+    public void putPhoneLineInUser() {
+
         MockHttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+        Client cl = aClient();
+        PhoneLine pl= aPhoneLine();
 
-        Integer id=1;
-        Mockito.when(clientRepository.existsById(1)).thenReturn(true);
-        PostResponse reaponse =clientService.deleteClient(id);
+        Mockito.when(clientRepository.getById(cl.getIdClient())).thenReturn(aClient());
+        Mockito.when(phoneLineRepository.getById(pl.getIdLine())).thenReturn(aPhoneLine());
+        cl.setPhoneLine(pl);
+        Mockito.when(clientRepository.save(cl)).thenReturn(cl);
 
-        final PostResponse response = clientService.deleteClient(id);
-        assertEquals(OK,response.getHttpStatus());
+        final PostResponse response = clientService.putPhoneLineInUser(cl.getIdClient(),pl.getIdLine());
+        assertNotNull(response);
 
     }
 
+    @Test
+    public void putUserInClient() {
 
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+        Client cl = aClient();
+        User u= aUser();
 
+        Mockito.when(clientRepository.getById(cl.getIdClient())).thenReturn(aClient());
+        Mockito.when(userService.findByCode(u.getIdUser())).thenReturn(aUser());
+        cl.setUser(u);
+        Mockito.when(clientRepository.save(cl)).thenReturn(cl);
 
+        final PostResponse response = clientService.putUserInClient(cl.getIdClient(), u.getIdUser());
+        assertNotNull(response);
 
+    }
+    @Test
+    public void getClientByNumber(){
 
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+        Client cl = aClient();
+        PhoneLine pl = aPhoneLine();
 
+        Mockito.when(clientRepository.findByPhoneLine(pl)).thenReturn(cl);
 
+        final Client response = clientService.getClientByNumber(pl);
+        assertNotNull(response);
+
+    }
 
 
 

@@ -33,7 +33,6 @@ public class BandService {
 
     public Float getPriceByHour(Integer idBand, Integer hour ){
         Float response = Float.valueOf(0);
-
         Band b = this.bandRepository.getById(idBand);
         Integer i= b.getHourInitial();
         Integer f=b.getHourFinished();

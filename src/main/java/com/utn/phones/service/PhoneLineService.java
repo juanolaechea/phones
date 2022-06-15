@@ -23,7 +23,6 @@ public class PhoneLineService {
     private static final String currentPath = "phoneLine";
     private PhoneLineRepository phoneLineRepository;
 
-
     @Autowired
     public PhoneLineService(PhoneLineRepository phoneLineRepository) {
         this.phoneLineRepository = phoneLineRepository;
@@ -32,7 +31,6 @@ public class PhoneLineService {
 
     public PostResponse addPhoneLine(PhoneLine phoneLine) {
         PhoneLine pl =phoneLineRepository.save(phoneLine);
-
         return PostResponse.builder()
                 .httpStatus(HttpStatus.CREATED)
                 .link(buildURL(currentPath, pl.getIdLine().toString()))
@@ -49,14 +47,10 @@ public class PhoneLineService {
                 .orElseThrow(() -> new HttpClientErrorException(HttpStatus.BAD_REQUEST, "PhoneLine not Exists "));
     }
 
-    public PostResponse deletePhoneLine(Integer idPhoneLine) {
-
-        if(phoneLineRepository.existsById(idPhoneLine)) {
+    public void deletePhoneLine(Integer idPhoneLine) {
+        try {
             this.phoneLineRepository.deleteById(idPhoneLine);
-            return PostResponse.builder()
-                    .httpStatus(HttpStatus.OK)
-                    .build();
-        }else {
+        }catch ( ElementDoesNotExistsException e){
             throw new ElementDoesNotExistsException();
         }
     }
@@ -67,12 +61,11 @@ public class PhoneLineService {
     }
 
     public void enablePhoneLine(Integer idPhoneLine) {
-
-        if(idPhoneLine != null && idPhoneLine >0){
+        try {
             PhoneLine pl= this.phoneLineRepository.getById(idPhoneLine);
             pl.setValid(true);
             this.phoneLineRepository.save(pl);
-        }else {
+        }catch (ValidationPhoneLineException e) {
             throw new ValidationPhoneLineException();
         }
     }
