@@ -5,6 +5,7 @@ import com.utn.phones.Utils.PostResponse;
 import com.utn.phones.domain.User;
 import com.utn.phones.dto.LoginRequestDto;
 import com.utn.phones.dto.LoginResponseDto;
+import com.utn.phones.service.JwtService;
 import com.utn.phones.service.TariffService;
 import com.utn.phones.service.UserService;
 import lombok.AllArgsConstructor;
@@ -26,7 +27,7 @@ public class UserController {
 
     UserService userService;
     AuthenticationManager authenticationManager;
-    TariffService.JwtService jwtService;
+    JwtService jwtService;
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto loginRequestDto) {

@@ -1,6 +1,7 @@
 package com.utn.phones.controller;
 
 import com.utn.phones.Utils.PostResponse;
+import com.utn.phones.service.JwtService;
 import com.utn.phones.service.TariffService;
 import com.utn.phones.service.UserService;
 import org.junit.jupiter.api.Test;
@@ -25,7 +26,7 @@ public class UserControllerTest extends Abstrascttest{
     @MockBean
     AuthenticationManager authenticationManager;
     @MockBean
-    TariffService.JwtService jwtService;
+    JwtService jwtService;
 
     @Test
     public void addUser()throws Exception{
