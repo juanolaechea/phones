@@ -121,4 +121,39 @@ public class PhoneLineServiceTest {
         assertNotNull(response, "Should be not null.");
     }
 
+    @Test
+    public void enablePhoneLine()throws Exception{
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+
+        Mockito.when(phoneLineRepository.getById(aPhoneLine().getIdLine())).thenReturn(aPhoneLine());
+        assertDoesNotThrow(() -> phoneLineService.enablePhoneLine(aPhoneLine().getIdLine()));
+
+    }
+
+    @Test
+    public void enablePhoneLineThrow()throws Exception{
+        doThrow(ElementDoesNotExistsException.class).when(phoneLineRepository).getById(aPhoneLine().getIdLine());
+
+        assertThrows(ElementDoesNotExistsException.class,() -> phoneLineService.enablePhoneLine(aPhoneLine().getIdLine()));
+
+    }
+    @Test
+    public void disablePhoneLine()throws Exception{
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+
+        Mockito.when(phoneLineRepository.getById(aPhoneLine().getIdLine())).thenReturn(aPhoneLine());
+        assertDoesNotThrow(() -> phoneLineService.disablePhoneLine(aPhoneLine().getIdLine()));
+
+    }
+
+    @Test
+    public void disablePhoneLineThrow()throws Exception{
+        doThrow(ElementDoesNotExistsException.class).when(phoneLineRepository).getById(aPhoneLine().getIdLine());
+
+        assertThrows(ElementDoesNotExistsException.class,() -> phoneLineService.disablePhoneLine(aPhoneLine().getIdLine()));
+
+    }
+
 }

@@ -5,6 +5,7 @@ import com.utn.phones.domain.City;
 import com.utn.phones.domain.Client;
 import com.utn.phones.domain.PhoneLine;
 import com.utn.phones.domain.Tariff;
+import com.utn.phones.exceptions.ElementDoesNotExistsException;
 import com.utn.phones.persistence.TariffRepository;
 import org.h2.command.dml.MergeUsing;
 import org.junit.jupiter.api.Test;
@@ -23,7 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.utn.phones.Utils.TestUtils.*;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.doThrow;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
@@ -48,5 +50,26 @@ public class TariffServiceTest {
         assertNotNull(response);
     }
 
+    @Test
+    public void getTariffByCities()throws Exception{
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+        Mockito.when(cityService.findByCode(aCity().getCode())).thenReturn(aCity());
+        Mockito.when(cityService.findByCode(aCity().getCode())).thenReturn(aCity());
+        assertDoesNotThrow(() -> tariffRepository.findByCityOriginAndCityDestination(aCity(),aCity()));
+
+
+    }
+
+
 
 }
+
+/*
+  public Tariff getTariffByCities(String codeO, String codeD){
+        City o= this.cityService.findByCode(codeO);
+        City d= this.cityService.findByCode(codeD);
+         return this.tariffRepository.findByCityOriginAndCityDestination(o,d);
+    }
+
+ */

@@ -118,8 +118,6 @@ public class ClientBackControllerTest extends Abstrascttest {
     }
 
 
-
-
     @Test //ok
     public void findClientByIdException()throws Exception{
         final  ResultActions resultActions = givenController().perform(MockMvcRequestBuilders

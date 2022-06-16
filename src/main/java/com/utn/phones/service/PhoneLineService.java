@@ -65,18 +65,18 @@ public class PhoneLineService {
             PhoneLine pl= this.phoneLineRepository.getById(idPhoneLine);
             pl.setValid(true);
             this.phoneLineRepository.save(pl);
-        }catch (ValidationPhoneLineException e) {
-            throw new ValidationPhoneLineException();
+        }catch (ElementDoesNotExistsException e) {
+            throw new ElementDoesNotExistsException();
         }
     }
 
     public void disablePhoneLine(Integer idPhoneLine) {
-        if(idPhoneLine != null && idPhoneLine ==0){
+        try {
             PhoneLine pl= this.phoneLineRepository.getById(idPhoneLine);
             pl.setValid(false);
             this.phoneLineRepository.save(pl);
-        }else {
-            throw new ValidationPhoneLineException();
+        }catch (ElementDoesNotExistsException e) {
+            throw new ElementDoesNotExistsException();
         }
     }
 

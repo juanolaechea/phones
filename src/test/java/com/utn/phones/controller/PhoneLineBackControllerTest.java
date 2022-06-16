@@ -108,8 +108,43 @@ public class PhoneLineBackControllerTest extends Abstrascttest{
                 .andExpect(status().isOk());
         assertEquals(HttpStatus.OK.value(),resultActions.andReturn().getResponse().getStatus());
     }
+    @Test //ok
+    public void enablePhoneLine()throws Exception{
+        final  ResultActions resultActions = givenController().perform(MockMvcRequestBuilders
+                        .put("/api/phoneLine/enable/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+        assertEquals(HttpStatus.OK.value(),resultActions.andReturn().getResponse().getStatus());
 
+    }
+    @Test //ok
+    public void enablePhoneLineException()throws Exception{
+        final  ResultActions resultActions = givenController().perform(MockMvcRequestBuilders
+                        .put("/api/phoneLine/enable/a")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+        assertEquals(HttpStatus.BAD_REQUEST.value(),resultActions.andReturn().getResponse().getStatus());
 
+    }
+
+    @Test //ok
+    public void disable()throws Exception{
+        final  ResultActions resultActions = givenController().perform(MockMvcRequestBuilders
+                        .put("/api/phoneLine/disable/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+        assertEquals(HttpStatus.OK.value(),resultActions.andReturn().getResponse().getStatus());
+
+    }
+    @Test //ok
+    public void disableException()throws Exception{
+        final  ResultActions resultActions = givenController().perform(MockMvcRequestBuilders
+                        .put("/api/phoneLine/disable/a")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+        assertEquals(HttpStatus.BAD_REQUEST.value(),resultActions.andReturn().getResponse().getStatus());
+
+    }
 
 
 
@@ -119,3 +154,5 @@ public class PhoneLineBackControllerTest extends Abstrascttest{
 
 
 }
+
+

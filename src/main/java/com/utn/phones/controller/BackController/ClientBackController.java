@@ -50,15 +50,15 @@ public class ClientBackController {
 
 
     //Traer todos los clientes
-    @GetMapping(URL_CLIENT)
-    public ResponseEntity<List<ClientDto>> findAllClients(){
+    @GetMapping(URL_CLIENT+"/")
+    public ResponseEntity<List<ClientDto>> findAllClients(Authentication auth){
         List<ClientDto>clients= this.clientService.findAllClient();
         return clients.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(clients);
     }
 
     //Traer client por id
     @GetMapping(path = URL_CLIENT + "/{idClient}")
-    public ClientDto findClientById( @PathVariable("idClient") Integer idClient) throws ElementDoesNotExistsException, BadRequestException{
+    public ClientDto findClientById( Authentication auth, @PathVariable("idClient") Integer idClient) throws ElementDoesNotExistsException, BadRequestException{
 
         return ClientDto.to(this.clientService.findByCode(idClient));
 

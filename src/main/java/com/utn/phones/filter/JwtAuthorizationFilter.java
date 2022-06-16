@@ -1,6 +1,6 @@
 package com.utn.phones.filter;
 
-import com.utn.phones.service.JwtService;
+import com.utn.phones.service.TariffService;
 import com.utn.phones.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,7 +25,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private UserService myUserDetailService;
 
     @Autowired
-    private JwtService jwtService;
+    private TariffService.JwtService jwtService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

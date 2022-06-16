@@ -45,11 +45,18 @@ public class ClientService {
 
     //preguntar si es un cliente
     public PostResponse addClient(Client client) throws ElementDoesNotAClient {
+            User u = new User();
+            u.setUsername(client.getName().toLowerCase());
+            u.setPassword("a");
+            u.setUserType(client.getUserType());
+            userService.addUser(u);
+            Client c= client;
+            c.setUser(u);
+            this.clientRepository.save(c);
 
-            Client cl = clientRepository.save(client);
             return PostResponse.builder()
                     .httpStatus(HttpStatus.CREATED)
-                    .link(buildURL(URL_CLIENT, cl.getIdClient().toString()))
+                    .link(buildURL(URL_CLIENT, c.getIdClient().toString()))
                     .build();
 
     }

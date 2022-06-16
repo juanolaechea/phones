@@ -19,15 +19,13 @@ BEGIN
 			LEAVE get_lines;
 		END IF;
 
-         select ifnull(count(*),0) INTO vCallsQuantity FROM calls WHERE id_line_origin = vIdLine AND invoice = 0;
+        select ifnull(count(*),0) INTO vCallsQuantity FROM calls WHERE id_line_origin = vIdLine AND invoice = 0;
         select ifnull(sum(total_price),0) INTO vTotalPrice FROM calls WHERE id_line_origin = vIdLine AND invoice = 0;
         select ifnull(sum(price_x_minute),0) INTO vTotalCost FROM calls WHERE id_line_origin = vIdLine AND invoice = 0;
-        set vIdClient= SELECT C.id_client FROM C.client WHERE phone_line_id_line=vIdLine;
+        select c.id_client Into vIdClient FROM clients c WHERE phone_line_id_line = vIdLine;
 
-        INSERT INTO bills(amount_calls,bill_date,total_price,total_cost,expiration_date,paid,phone_line_id_line,client_id_client)
+        INSERT INTO bills(amount_calls,date,total_price,total_cost,expiration_date,paid,phone_line_id_line,client_id_client)
         VALUES (vCallsQuantity,CURRENT_DATE(),vTotalPrice,vTotalCost,(CURDATE() + INTERVAL 15 day),0,vIdLine,vIdClient);
-
-
 
         update calls SET invoice = 1 WHERE id_line_origin = vIdLine AND invoice = 0;
 

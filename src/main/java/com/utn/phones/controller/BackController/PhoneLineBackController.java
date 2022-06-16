@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.orm.jpa.JpaSystemException;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -42,7 +43,7 @@ public class PhoneLineBackController {
     }
     //Traer todas las lineas
     @GetMapping(path = URL_PHONE_LINE +"/")
-    public  ResponseEntity<List<PhoneLine> > getAll( )  {
+    public  ResponseEntity<List<PhoneLine> > getAll(Authentication auth)  {
         List<PhoneLine>phoneLines = this.phoneLineService.getAll();
         return phoneLines.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(phoneLines);
     }
@@ -60,23 +61,19 @@ public class PhoneLineBackController {
     }
     //Habilitar linea
     @PutMapping(path = URL_PHONE_LINE + "/enable/{idPhoneLine}")
-    public void enablePhoneLine (@PathVariable("idPhoneLine") Integer idPhoneLine)throws ValidationPhoneLineException, PhoneLineException {
-        try{
+    public void enablePhoneLine (@PathVariable("idPhoneLine") Integer idPhoneLine)throws ElementDoesNotExistsException{
+
             this.phoneLineService.enablePhoneLine(idPhoneLine);
-        }catch (JpaSystemException e){
-            throw new PhoneLineException(e.getCause().getCause().getMessage());
-        }
+
+    }
+    //Habilitar linea
+    @PutMapping(path = URL_PHONE_LINE + "/disable/{idPhoneLine}")
+    public void disable (@PathVariable("idPhoneLine") Integer idPhoneLine)throws ElementDoesNotExistsException{
+
+        this.phoneLineService.disablePhoneLine(idPhoneLine);
+
     }
 
-    //Deshabilitar linea
-    @PutMapping(path = URL_PHONE_LINE + "/disable/{idPhoneLine}")
-    public void disablePhoneLine (@PathVariable("isPhoneLine")Integer idPhoneLine) throws ValidationPhoneLineException, PhoneLineException {
-        try {
-            this.phoneLineService.disablePhoneLine(idPhoneLine);
-        }catch(JpaSystemException e){
-            throw  new PhoneLineException((e.getCause().getCause().getMessage()));
-        }
-    }
 
 
 

@@ -2,14 +2,12 @@ package com.utn.phones.controller;
 
 
 import com.utn.phones.Utils.PostResponse;
-import com.utn.phones.domain.PhoneLine;
 import com.utn.phones.domain.User;
 import com.utn.phones.dto.LoginRequestDto;
 import com.utn.phones.dto.LoginResponseDto;
-import com.utn.phones.service.JwtService;
+import com.utn.phones.service.TariffService;
 import com.utn.phones.service.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,7 +26,7 @@ public class UserController {
 
     UserService userService;
     AuthenticationManager authenticationManager;
-    JwtService jwtService;
+    TariffService.JwtService jwtService;
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto loginRequestDto) {
