@@ -49,7 +49,6 @@ public class TariffServiceTest {
         final List<Tariff> response = tariffService.getAllTariff();
         assertNotNull(response);
     }
-
     @Test
     public void getTariffByCities()throws Exception{
         MockHttpServletRequest request = new MockHttpServletRequest();
@@ -61,15 +60,5 @@ public class TariffServiceTest {
 
     }
 
-
-
 }
 
-/*
-  public Tariff getTariffByCities(String codeO, String codeD){
-        City o= this.cityService.findByCode(codeO);
-        City d= this.cityService.findByCode(codeD);
-         return this.tariffRepository.findByCityOriginAndCityDestination(o,d);
-    }
-
- */

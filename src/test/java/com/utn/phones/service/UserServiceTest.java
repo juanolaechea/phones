@@ -52,7 +52,6 @@ public class UserServiceTest {
         final PostResponse response = userService.addUser(aUser);
         assertNotNull(response, "Should be not null.");
     }
-
     @Test
     public void getAllUser(){
         MockHttpServletRequest request = new MockHttpServletRequest();
@@ -66,7 +65,6 @@ public class UserServiceTest {
         assertNotNull(response);
 
     }
-
     @Test
     public void findByCode()  {
         MockHttpServletRequest request = new MockHttpServletRequest();

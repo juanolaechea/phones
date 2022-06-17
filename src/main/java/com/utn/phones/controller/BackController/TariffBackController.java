@@ -1,6 +1,7 @@
 package com.utn.phones.controller.BackController;
 
 import com.utn.phones.domain.Tariff;
+import com.utn.phones.exceptions.DeauthorizedException;
 import com.utn.phones.service.PhoneLineService;
 import com.utn.phones.service.TariffService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class TariffBackController {
     }
 
     @GetMapping(path = URL_TARIFF +"/")
-    public List<Tariff>findAllTariff(){return this.tariffService.getAllTariff();}
+    public List<Tariff>findAllTariff()throws DeauthorizedException {return this.tariffService.getAllTariff();}
 
 
 

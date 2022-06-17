@@ -23,6 +23,7 @@ public class CallBackController {
 
     private CallService callService;
 
+    @Autowired
     public CallBackController(CallService callService) {
         this.callService = callService;
     }

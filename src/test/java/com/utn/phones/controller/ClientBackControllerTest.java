@@ -146,8 +146,6 @@ public class ClientBackControllerTest extends Abstrascttest {
 
     }
 
-
-
     @Test //ok
     public void putCityInClient()throws Exception{
 

@@ -38,19 +38,20 @@ public class PhoneLineBackController {
     //Agregar linea
     @PostMapping(URL_PHONE_LINE)
     @ResponseStatus(HttpStatus.CREATED)
-    public PostResponse addPhoneLine(@RequestBody PhoneLine phoneLine) {
+    public PostResponse addPhoneLine(@RequestBody PhoneLine phoneLine)throws DeauthorizedException {
         return phoneLineService.addPhoneLine(phoneLine);
     }
+
     //Traer todas las lineas
     @GetMapping(path = URL_PHONE_LINE +"/")
-    public  ResponseEntity<List<PhoneLine> > getAll(Authentication auth)  {
+    public  ResponseEntity<List<PhoneLine> > getAll(Authentication auth)throws DeauthorizedException,ElementDoesNotExistsException  {
         List<PhoneLine>phoneLines = this.phoneLineService.getAll();
         return phoneLines.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(phoneLines);
     }
 
     //Buscar linea por id
     @GetMapping(path = URL_PHONE_LINE + "/{idPhoneLine}")
-    public PhoneLine getPhoneLineById(@PathVariable("idPhoneLine") Integer idPhoneLine) {
+    public PhoneLine getPhoneLineById(@PathVariable("idPhoneLine") Integer idPhoneLine)throws DeauthorizedException {
         return this.phoneLineService.findByCode(idPhoneLine);
     }
 
@@ -59,6 +60,7 @@ public class PhoneLineBackController {
     public void deletePhoneLine(@PathVariable("idPhoneLine") Integer idPhoneLine) throws ElementDoesNotExistsException{
          this.phoneLineService.deletePhoneLine(idPhoneLine);
     }
+
     //Habilitar linea
     @PutMapping(path = URL_PHONE_LINE + "/enable/{idPhoneLine}")
     public void enablePhoneLine (@PathVariable("idPhoneLine") Integer idPhoneLine)throws ElementDoesNotExistsException{
@@ -66,6 +68,7 @@ public class PhoneLineBackController {
             this.phoneLineService.enablePhoneLine(idPhoneLine);
 
     }
+
     //Habilitar linea
     @PutMapping(path = URL_PHONE_LINE + "/disable/{idPhoneLine}")
     public void disable (@PathVariable("idPhoneLine") Integer idPhoneLine)throws ElementDoesNotExistsException{

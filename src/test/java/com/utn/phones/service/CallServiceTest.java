@@ -44,15 +44,11 @@ public class CallServiceTest {
      ClientService clientService;
 
 
-
-
-
     @Test
     public void totalPrice(){
         float v =  aCallDto().getDuration() * 10;
         assertNotNull(v);
     }
-
     @Test
     public void getAll(){
         MockHttpServletRequest request = new MockHttpServletRequest();

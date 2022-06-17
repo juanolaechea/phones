@@ -62,7 +62,6 @@ public class EmployeeServiceTest {
         final PostResponse response = employeeService.addEmployee(aEmployee);
         assertNotNull(response, "Should be not null.");
     }
-
     @Test
     public void addEmployeeBarRequest() {
 
@@ -76,7 +75,6 @@ public class EmployeeServiceTest {
         final HttpStatus response = BAD_REQUEST;
         assertNotNull(response, "Should be not null.");
     }
-
     @Test
     public void getAll(){
         MockHttpServletRequest request = new MockHttpServletRequest();
@@ -102,9 +100,6 @@ public class EmployeeServiceTest {
         assertNotNull(response, "Should be not null.");
 
     }
-
-
-
     @Test
     public void getByIdBadRequest() throws ElementDoesNotExistsException {
         MockHttpServletRequest request = new MockHttpServletRequest();
@@ -117,8 +112,6 @@ public class EmployeeServiceTest {
         assertNotNull(response, "Should be not null.");
 
     }
-
-
     @Test
     public void putUserInEmployee() {
 

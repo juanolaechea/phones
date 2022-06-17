@@ -21,6 +21,8 @@ public class ClientDto {
     private String name;
     private String lastName;
     private Integer dni;
+    private String user;
+ 
 
 
     public static ClientDto to (Client client) {
@@ -29,6 +31,7 @@ public class ClientDto {
                 .name(client.getName())
                 .lastName(client.getLastName())
                 .dni(client.getDni())
+                .user(client.getUser().getUsername())
                 .build();
 
         return clientdto;

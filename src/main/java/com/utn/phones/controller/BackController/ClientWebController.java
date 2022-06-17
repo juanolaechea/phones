@@ -1,14 +1,14 @@
 package com.utn.phones.controller.BackController;
 
 
-import com.utn.phones.domain.Bill;
 import com.utn.phones.domain.Call;
 import com.utn.phones.domain.User;
 import com.utn.phones.dto.BillDto;
 import com.utn.phones.dto.ClientDto;
-import com.utn.phones.service.CityService;
+import com.utn.phones.exceptions.BadRequestException;
+import com.utn.phones.exceptions.DeauthorizedException;
+import com.utn.phones.exceptions.ElementDoesNotExistsException;
 import com.utn.phones.service.ClientService;
-import org.hibernate.type.LocalDateType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -18,7 +18,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.utn.phones.constants.ControllerConstants.*;
@@ -40,7 +39,7 @@ public class ClientWebController {
     @GetMapping(URL_WEB+"/bill"+"/{idClient}")
     public ResponseEntity<List<BillDto>> findAllBillByClientRank(Authentication auth, @PathVariable("idClient") Integer idClient,
                                                                  @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate from,
-                                                                 @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate to){
+                                                                 @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate to) throws DeauthorizedException, ElementDoesNotExistsException {
         String username=clientService.findByCode(idClient).getUser().getUsername();
         User u = (User) auth.getPrincipal();
         if(u.getUsername().equals(username)){
@@ -58,7 +57,7 @@ public class ClientWebController {
     @GetMapping(URL_WEB+"/{idClient}")
     public ResponseEntity<List<Call>> findAllCallByClientRank(Authentication auth,@PathVariable("idClient") Integer idClient,
                                                           @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate from,
-                                                          @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate to){
+                                                          @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate to)throws DeauthorizedException, ElementDoesNotExistsException{
 
         String username=clientService.findByCode(idClient).getUser().getUsername();
         User u = (User) auth.getPrincipal();
@@ -71,6 +70,19 @@ public class ClientWebController {
     }
 
 
+    //Traer client por id
+    @GetMapping(path =URL_WEB + URL_CLIENT + "/{idClient}")
+    public Object findClientById(Authentication auth, @PathVariable("idClient") Integer idClient) throws DeauthorizedException, ElementDoesNotExistsException, BadRequestException {
+
+        String username=clientService.findByCode(idClient).getUser().getUsername();
+        User u = (User) auth.getPrincipal();
+        if(u.getUsername().equals(username)){
+            return ClientDto.to(clientService.findByCode(idClient));
+        }else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+    }
 
 
 }

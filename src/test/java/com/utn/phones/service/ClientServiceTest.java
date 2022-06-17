@@ -69,7 +69,6 @@ public class ClientServiceTest {
         final PostResponse response = clientService.addClient(aClient);
         assertNotNull(response, "Should be not null.");
     }
-
     @Test
     public void addClientBadRequest() {
 
@@ -104,7 +103,6 @@ public class ClientServiceTest {
         assertNotNull(response, "Should be not null.");
 
     }
-
     @Test
     public void findAllClient(){
         MockHttpServletRequest request = new MockHttpServletRequest();
@@ -118,8 +116,6 @@ public class ClientServiceTest {
         assertNotNull(response);
 
     }
-
-
     @Test
     public void putCityInUser() {
 
@@ -138,7 +134,6 @@ public class ClientServiceTest {
         assertNotNull(response);
 
     }
-
     @Test
     public void deleteClient() throws ElementDoesNotExistsException {
         doNothing().when(clientRepository).deleteById(anyInt());
@@ -148,14 +143,13 @@ public class ClientServiceTest {
         verify(clientRepository, times(1)).deleteById(anyInt());
     }
     @Test
-    void deleteClientThrows() {
+    public void deleteClientThrows() {
         doThrow(ElementDoesNotExistsException.class).when(clientRepository).deleteById(anyInt());
 
         assertThrows(ElementDoesNotExistsException.class,() -> clientService.deleteClient(1));
 
         verify(clientRepository, times(1)).deleteById(anyInt());
     }
-
     @Test
     public void putPhoneLineInUser() {
 
@@ -173,7 +167,6 @@ public class ClientServiceTest {
         assertNotNull(response);
 
     }
-
     @Test
     public void putUserInClient() {
 

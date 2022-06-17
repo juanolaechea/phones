@@ -5,6 +5,7 @@ import com.utn.phones.Utils.PostResponse;
 import com.utn.phones.domain.PhoneLine;
 import com.utn.phones.domain.Tariff;
 import com.utn.phones.domain.User;
+import com.utn.phones.exceptions.DeauthorizedException;
 import com.utn.phones.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,18 +30,18 @@ public class UserBackController {
     }
 
     @PostMapping(path= URl_USER+"/")
-    public PostResponse addUser(@RequestBody User user){
+    public PostResponse addUser(@RequestBody User user)throws DeauthorizedException {
         return userService.addUser(user);
     }
 
     @GetMapping(path = URl_USER +"/")
-    public ResponseEntity<List<User>> findAllUser(){
+    public ResponseEntity<List<User>> findAllUser()throws DeauthorizedException{
         List<User>users=this.userService.getAllUser();
         return users.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(users);
     }
 
     @GetMapping(path = URl_USER + "/{idUser}")
-    public User getById(@PathVariable("idUser") Integer idUser) {
+    public User getById(@PathVariable("idUser") Integer idUser)throws DeauthorizedException {
         return this.userService.findByCode(idUser);
     }
 }

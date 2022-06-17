@@ -92,7 +92,9 @@ public class ClientService {
     public PostResponse putPhoneLineInUser(Integer idClient, Integer idPhoneLine) {
         Client cl = this.clientRepository.getById(idClient);
         PhoneLine p = this.phoneLineRepository.getById(idPhoneLine);
+        City c= this.cityRepository.getCodeByNumber(p.getNumberLine());
         cl.setPhoneLine(p);
+        cl.setCity(c);
         this.clientRepository.save(cl);
         return PostResponse.builder()
                 .httpStatus(HttpStatus.OK)

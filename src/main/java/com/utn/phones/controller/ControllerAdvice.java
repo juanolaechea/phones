@@ -13,7 +13,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @org.springframework.web.bind.annotation.ControllerAdvice
-public class ControllerAdvice extends ResponseEntityExceptionHandler {
+public class  ControllerAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ElementDoesNotExistsException.class)
     public ResponseEntity processEntityDoesNotExists() {

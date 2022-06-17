@@ -5,15 +5,12 @@ import com.utn.phones.domain.Tariff;
 import com.utn.phones.exceptions.ElementDoesNotExistsException;
 import com.utn.phones.persistence.BandRepository;
 import com.utn.phones.persistence.TariffRepository;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
 
 @Service
 public class TariffService {

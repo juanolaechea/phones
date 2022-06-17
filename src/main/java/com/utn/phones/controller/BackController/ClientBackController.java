@@ -34,6 +34,7 @@ public class ClientBackController {
     private ClientService clientService;
     private CallService callService;
 
+    @Autowired
     public ClientBackController(CityService cityService, PhoneLineService phoneLineService, ClientService clientService, CallService callService) {
         this.cityService = cityService;
         this.phoneLineService = phoneLineService;
@@ -44,21 +45,21 @@ public class ClientBackController {
     //Agregar cliente /testeOk
     @PostMapping(URL_CLIENT)
     @ResponseStatus(HttpStatus.CREATED)
-    public PostResponse addCient(@RequestBody Client client) {
+    public PostResponse addCient(@RequestBody Client client)throws DeauthorizedException {
         return clientService.addClient(client);
     }
 
 
     //Traer todos los clientes
     @GetMapping(URL_CLIENT+"/")
-    public ResponseEntity<List<ClientDto>> findAllClients(Authentication auth){
+    public ResponseEntity<List<ClientDto>> findAllClients()throws DeauthorizedException{
         List<ClientDto>clients= this.clientService.findAllClient();
         return clients.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(clients);
     }
 
     //Traer client por id
     @GetMapping(path = URL_CLIENT + "/{idClient}")
-    public ClientDto findClientById( Authentication auth, @PathVariable("idClient") Integer idClient) throws ElementDoesNotExistsException, BadRequestException{
+    public ClientDto findClientById( @PathVariable("idClient") Integer idClient) throws DeauthorizedException, ElementDoesNotExistsException, BadRequestException{
 
         return ClientDto.to(this.clientService.findByCode(idClient));
 
@@ -66,18 +67,18 @@ public class ClientBackController {
 
     //Agregar ciudad a client
     @PutMapping(path = URL_CLIENT + "/{idClient}" + URL_CITY + "/{idCity}")
-    public PostResponse putCityInClient(@PathVariable("idClient") Integer idClient, @PathVariable("idCity") Integer idCity) throws ElementDoesNotExistsException, BadRequestException {
+    public PostResponse putCityInClient(@PathVariable("idClient") Integer idClient, @PathVariable("idCity") Integer idCity) throws DeauthorizedException, ElementDoesNotExistsException, BadRequestException {
         return clientService.putCityInUser(idClient, idCity);
     }
 
     //Agregar line a client   ojo lo que devuelve
     @PutMapping(path = URL_CLIENT + "/{idClient}" + URL_PHONE_LINE + "/{idLine}")
-    public PostResponse putLineInClient(@PathVariable("idClient") Integer idClient, @PathVariable("idLine") Integer idLine) throws ElementDoesNotExistsException, BadRequestException {
+    public PostResponse putLineInClient(@PathVariable("idClient") Integer idClient, @PathVariable("idLine") Integer idLine)throws DeauthorizedException,ElementDoesNotExistsException, BadRequestException {
         return this.clientService.putPhoneLineInUser(idClient, idLine);
     }
 
     @PutMapping(path = URL_CLIENT + "/{idClient}" + URl_USER + "/{idUser}")
-    public PostResponse putUserInClient(@PathVariable("idClient") Integer idClient, @PathVariable("idUser") Integer idUser) throws ElementDoesNotExistsException, BadRequestException {
+    public PostResponse putUserInClient(@PathVariable("idClient") Integer idClient, @PathVariable("idUser") Integer idUser)throws DeauthorizedException, ElementDoesNotExistsException, BadRequestException {
         return this.clientService.putUserInClient(idClient, idUser);
     }
 

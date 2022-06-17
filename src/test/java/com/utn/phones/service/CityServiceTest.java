@@ -44,7 +44,6 @@ public class CityServiceTest {
         final List<City> response = cityService.findAll();
         assertNotNull(response);
     }
-
     @Test
     public void findById(){
         MockHttpServletRequest request = new MockHttpServletRequest();

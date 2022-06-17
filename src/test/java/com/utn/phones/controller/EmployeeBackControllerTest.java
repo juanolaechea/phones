@@ -46,7 +46,6 @@ public class EmployeeBackControllerTest extends Abstrascttest {
                 .getResponse()
                 .getStatus(), "Is should be 201");
     }
-
     @Test //ok
     public void addEmployeeBadRequest() throws Exception {
 
@@ -63,7 +62,6 @@ public class EmployeeBackControllerTest extends Abstrascttest {
                 .getResponse()
                 .getStatus(), "Is should be 201");
     }
-
     @Test //ok
     public void getAll() throws Exception{
         List<Employee> employees = new ArrayList<>();
@@ -88,7 +86,6 @@ public class EmployeeBackControllerTest extends Abstrascttest {
         assertEquals(HttpStatus.NO_CONTENT.value(),resultActions.andReturn().getResponse().getStatus());
 
     }
-
     @Test //ok
     public void getById()throws Exception{
         when(employeeService.getById(1)).thenReturn(aEmployee());
@@ -110,7 +107,6 @@ public class EmployeeBackControllerTest extends Abstrascttest {
 
         assertEquals(HttpStatus.BAD_REQUEST.value(), resultActions.andReturn().getResponse().getStatus());
     }
-
     @Test //ok
     public void putUserInEmployee()throws Exception{
 
@@ -130,7 +126,6 @@ public class EmployeeBackControllerTest extends Abstrascttest {
                 .getStatus(),"Is should be 200");
 
     }
-
     @Test //ok
     public void putUserInEmployeeBadRequest()throws Exception{
 
