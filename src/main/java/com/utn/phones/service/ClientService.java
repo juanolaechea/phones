@@ -6,9 +6,11 @@ import com.utn.phones.dto.BillDto;
 import com.utn.phones.dto.ClientDto;
 import com.utn.phones.exceptions.ElementDoesNotAClient;
 import com.utn.phones.exceptions.ElementDoesNotExistsException;
+import com.utn.phones.exceptions.ElementExistsException;
 import com.utn.phones.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
@@ -44,20 +46,15 @@ public class ClientService {
     }
 
     //preguntar si es un cliente
-    public PostResponse addClient(Client client) throws ElementDoesNotAClient {
-            User u = new User();
-            u.setUsername(client.getName().toLowerCase());
-            u.setPassword("a");
-            u.setUserType(client.getUserType());
-            userService.addUser(u);
-            Client c= client;
-            c.setUser(u);
-            this.clientRepository.save(c);
+    public ResponseEntity<Client> addClient(Client client) throws ElementDoesNotAClient, ElementExistsException {
 
-            return PostResponse.builder()
-                    .httpStatus(HttpStatus.CREATED)
-                    .link(buildURL(URL_CLIENT, c.getIdClient().toString()))
-                    .build();
+        if(!clientRepository.existsByDni(client.getDni())){
+            this.clientRepository.save(client);
+            return ResponseEntity.ok(client);
+        }else{
+            throw new ElementExistsException("Client exists!!");
+        }
+
 
     }
 

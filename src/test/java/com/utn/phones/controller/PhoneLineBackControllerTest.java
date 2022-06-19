@@ -69,7 +69,6 @@ public class PhoneLineBackControllerTest extends Abstrascttest{
                 .andExpect(status().isOk());
         assertEquals(HttpStatus.OK.value(),resultActions.andReturn().getResponse().getStatus());
     }
-
     @Test //ok
     public void getAllNoContent()throws Exception{
         List<PhoneLine> phoneLines = new ArrayList<>();
@@ -80,7 +79,6 @@ public class PhoneLineBackControllerTest extends Abstrascttest{
                 .andExpect(status().isNoContent());
         assertEquals(HttpStatus.NO_CONTENT.value(),resultActions.andReturn().getResponse().getStatus());
     }
-
     @Test //ok
     public void getPhoneLineById()throws Exception {
         when(phoneLineService.findByCode(aPhoneLine().getIdLine())).thenReturn(aPhoneLine());

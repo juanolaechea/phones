@@ -43,7 +43,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .authorizeRequests().antMatchers("/login").permitAll()
                 .antMatchers("/api/calls").permitAll()
                 .antMatchers("/api/client").hasAuthority(UserType.Employee.toString())
-                .antMatchers("/api/city").hasAuthority(UserType.Employee.toString())
+                .antMatchers("/api/city/").hasAuthority(UserType.Employee.toString())
                 .antMatchers("/api/client/").hasAuthority(UserType.Employee.toString())
                 .antMatchers("/api/client/{idClient}").hasAuthority(UserType.Employee.toString())
                 .antMatchers("/api/client/{idClient}/city/{idCity}").hasAuthority(UserType.Employee.toString())

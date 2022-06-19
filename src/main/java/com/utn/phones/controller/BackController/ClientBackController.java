@@ -45,10 +45,9 @@ public class ClientBackController {
     //Agregar cliente /testeOk
     @PostMapping(URL_CLIENT)
     @ResponseStatus(HttpStatus.CREATED)
-    public PostResponse addCient(@RequestBody Client client)throws DeauthorizedException {
-        return clientService.addClient(client);
+    public ResponseEntity<Client> addCient(@RequestBody Client client)throws DeauthorizedException,ElementExistsException {
+            return clientService.addClient(client);
     }
-
 
     //Traer todos los clientes
     @GetMapping(URL_CLIENT+"/")

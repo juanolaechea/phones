@@ -27,14 +27,17 @@ public class PhoneLineService {
     public PhoneLineService(PhoneLineRepository phoneLineRepository) {
         this.phoneLineRepository = phoneLineRepository;
     }
-    
 
-    public PostResponse addPhoneLine(PhoneLine phoneLine) {
-        PhoneLine pl =phoneLineRepository.save(phoneLine);
-        return PostResponse.builder()
-                .httpStatus(HttpStatus.CREATED)
-                .link(buildURL(currentPath, pl.getIdLine().toString()))
-                .build();
+
+    public ResponseEntity<PhoneLine> addPhoneLine(PhoneLine phoneLine) {
+
+        if(!phoneLineRepository.existsByNumberLine(phoneLine.getNumberLine())) {
+            PhoneLine pl = phoneLineRepository.save(phoneLine);
+            return ResponseEntity.ok(phoneLine);
+        }else {
+            throw new ElementExistsException("Phone line exists!!");
+        }
+
 
     }
 

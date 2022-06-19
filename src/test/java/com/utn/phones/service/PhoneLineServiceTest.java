@@ -1,11 +1,9 @@
 package com.utn.phones.service;
 
 
-import com.utn.phones.Utils.PostResponse;
-import com.utn.phones.Utils.TestUtils;
-import com.utn.phones.domain.Client;
 import com.utn.phones.domain.PhoneLine;
 import com.utn.phones.exceptions.ElementDoesNotExistsException;
+import com.utn.phones.exceptions.ElementExistsException;
 import com.utn.phones.persistence.PhoneLineRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.utn.phones.Utils.TestUtils.aClient;
 import static com.utn.phones.Utils.TestUtils.aPhoneLine;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -54,8 +51,18 @@ public class PhoneLineServiceTest {
 
         Mockito.when(phoneLineRepository.save(aPhoneLine)).thenReturn(aPhoneLineSaved);
 
-        final PostResponse response = phoneLineService.addPhoneLine(aPhoneLine);
+        final ResponseEntity response = phoneLineService.addPhoneLine(aPhoneLine);
         assertNotNull(response, "Should be not null.");
+    }
+
+    @Test
+    public void addPhoneLineConflict() {
+
+        doThrow(ElementExistsException.class).when(phoneLineRepository).save(aPhoneLine());
+
+        assertThrows(ElementExistsException.class,() -> phoneLineService.addPhoneLine(aPhoneLine()));
+
+        verify(phoneLineRepository, times(1)).save(aPhoneLine());
     }
     @Test
     public void getAll(){

@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -31,16 +32,16 @@ public class UserControllerTest extends Abstrascttest{
     @Test
     public void addUser()throws Exception{
 
-        when(userService.addUser(aUser())).thenReturn(PostResponse.builder().httpStatus(HttpStatus.CREATED).build());
+        when(userService.addUser(aUser())).thenReturn(ResponseEntity.ok(aUser()));
 
         final ResultActions resultActions = givenController().perform(MockMvcRequestBuilders
                         .post("/user")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(aUserJson()))
-                .andExpect(status().isCreated());
+                .andExpect(status().isOk());
 
 
-        assertEquals(HttpStatus.CREATED.value(),resultActions.andReturn()
+        assertEquals(HttpStatus.OK.value(),resultActions.andReturn()
                 .getResponse()
                 .getStatus(),"Is should be 201");
     }

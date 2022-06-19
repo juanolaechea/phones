@@ -14,6 +14,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -49,7 +50,7 @@ public class UserServiceTest {
 
         Mockito.when(userRepository.save(aUser)).thenReturn(aUserSaved);
 
-        final PostResponse response = userService.addUser(aUser);
+        final ResponseEntity response = userService.addUser(aUser);
         assertNotNull(response, "Should be not null.");
     }
     @Test

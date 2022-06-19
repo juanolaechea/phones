@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -66,7 +67,7 @@ public class ClientServiceTest {
 
         Mockito.when(clientRepository.save(aClient)).thenReturn(aClientSaved);
 
-        final PostResponse response = clientService.addClient(aClient);
+        final ResponseEntity response = ResponseEntity.ok(aClient);
         assertNotNull(response, "Should be not null.");
     }
     @Test

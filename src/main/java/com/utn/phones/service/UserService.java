@@ -8,6 +8,7 @@ import com.utn.phones.persistence.PhoneLineRepository;
 import com.utn.phones.persistence.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -34,12 +35,14 @@ public class UserService implements UserDetailsService {
         return u ;
     }
 
-    public PostResponse addUser(User user) {
-        User u = userRepository.save(user);
-        return PostResponse.builder()
-                .httpStatus(HttpStatus.CREATED)
-                .link(buildURL(currentPath, u.getUsername().toString()))
-                .build();
+    public ResponseEntity<User> addUser(User user) {
+        if(!userRepository.existsByUsername(user.getUsername())){
+            User u = userRepository.save(user);
+            return ResponseEntity.ok(user);
+        }else {
+            throw new ElementExistsException("User exists!!");
+        }
+
     }
 
     public List<User> getAllUser() {

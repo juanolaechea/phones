@@ -39,7 +39,7 @@ public class ClientBackControllerTest extends Abstrascttest {
     @Test //ok
     public void addClient()throws Exception{
 
-        when(clientService.addClient(aClient())).thenReturn(PostResponse.builder().httpStatus(HttpStatus.CREATED).build());
+        when(clientService.addClient(aClient())).thenReturn(ResponseEntity.ok(aClient()));
 
         final ResultActions resultActions = givenController().perform(MockMvcRequestBuilders
                 .post("/api/client")
@@ -57,7 +57,7 @@ public class ClientBackControllerTest extends Abstrascttest {
 
         Client  client= new Client();
         client=null;
-        when(clientService.addClient(client)).thenReturn(PostResponse.builder().httpStatus(HttpStatus.BAD_REQUEST).build());
+        when(clientService.addClient(client)).thenReturn(ResponseEntity.badRequest().body(client));
 
         final ResultActions resultActions = givenController().perform(MockMvcRequestBuilders
                         .post("/api/client")

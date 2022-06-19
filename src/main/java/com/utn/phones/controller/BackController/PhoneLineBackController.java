@@ -38,7 +38,7 @@ public class PhoneLineBackController {
     //Agregar linea
     @PostMapping(URL_PHONE_LINE)
     @ResponseStatus(HttpStatus.CREATED)
-    public PostResponse addPhoneLine(@RequestBody PhoneLine phoneLine)throws DeauthorizedException {
+    public ResponseEntity<PhoneLine> addPhoneLine(@RequestBody PhoneLine phoneLine)throws DeauthorizedException,ElementExistsException{
         return phoneLineService.addPhoneLine(phoneLine);
     }
 

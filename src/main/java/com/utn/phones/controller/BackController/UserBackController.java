@@ -6,6 +6,7 @@ import com.utn.phones.domain.PhoneLine;
 import com.utn.phones.domain.Tariff;
 import com.utn.phones.domain.User;
 import com.utn.phones.exceptions.DeauthorizedException;
+import com.utn.phones.exceptions.ElementExistsException;
 import com.utn.phones.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,7 @@ public class UserBackController {
     }
 
     @PostMapping(path= URl_USER+"/")
-    public PostResponse addUser(@RequestBody User user)throws DeauthorizedException {
+    public ResponseEntity<User> addUser(@RequestBody User user)throws DeauthorizedException, ElementExistsException {
         return userService.addUser(user);
     }
 
