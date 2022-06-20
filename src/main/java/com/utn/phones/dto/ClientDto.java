@@ -18,20 +18,20 @@ import java.time.format.DateTimeFormatter;
 @NoArgsConstructor
 public class ClientDto {
 
+    private Integer id;
     private String name;
     private String lastName;
     private Integer dni;
-    private String user;
  
 
 
     public static ClientDto to (Client client) {
 
         ClientDto clientdto = ClientDto.builder()
+                .id(client.getIdClient())
                 .name(client.getName())
                 .lastName(client.getLastName())
                 .dni(client.getDni())
-                .user(client.getUser().getUsername())
                 .build();
 
         return clientdto;

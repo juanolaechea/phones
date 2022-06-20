@@ -51,8 +51,6 @@ public class ClientWebController {
 
 
     }
-
-
     //
     @GetMapping(URL_WEB+"/{idClient}")
     public ResponseEntity<List<Call>> findAllCallByClientRank(Authentication auth,@PathVariable("idClient") Integer idClient,
