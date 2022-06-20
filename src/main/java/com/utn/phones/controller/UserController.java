@@ -1,12 +1,10 @@
 package com.utn.phones.controller;
 
 
-import com.utn.phones.Utils.PostResponse;
 import com.utn.phones.domain.User;
 import com.utn.phones.dto.LoginRequestDto;
 import com.utn.phones.dto.LoginResponseDto;
-import com.utn.phones.service.JwtService;
-import com.utn.phones.service.TariffService;
+import com.utn.phones.service.JwtService.JwtService;
 import com.utn.phones.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,10 +14,11 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import static com.utn.phones.constants.ControllerConstants.URl_USER;
-
+@Controller
 @RestController
 @AllArgsConstructor
 public class UserController {

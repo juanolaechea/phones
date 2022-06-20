@@ -6,6 +6,7 @@ import com.utn.phones.domain.Client;
 import com.utn.phones.domain.PhoneLine;
 import com.utn.phones.domain.Tariff;
 import com.utn.phones.exceptions.ElementDoesNotExistsException;
+import com.utn.phones.exceptions.ElementExistsException;
 import com.utn.phones.persistence.TariffRepository;
 import org.h2.command.dml.MergeUsing;
 import org.junit.jupiter.api.Test;
@@ -22,6 +23,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static com.utn.phones.Utils.TestUtils.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -59,6 +61,8 @@ public class TariffServiceTest {
 
 
     }
+
+
 
 }
 

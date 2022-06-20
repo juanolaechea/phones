@@ -1,4 +1,4 @@
-package com.utn.phones.service;
+package com.utn.phones.service.JwtService;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

@@ -4,6 +4,7 @@ import com.utn.phones.Utils.PostResponse;
 import com.utn.phones.domain.*;
 import com.utn.phones.dto.ClientDto;
 import com.utn.phones.exceptions.ElementDoesNotExistsException;
+import com.utn.phones.exceptions.ElementExistsException;
 import com.utn.phones.persistence.CityRepository;
 import com.utn.phones.persistence.ClientRepository;
 import com.utn.phones.persistence.PhoneLineRepository;
@@ -22,8 +23,6 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -51,6 +50,8 @@ public class ClientServiceTest {
 
     @Mock
     PhoneLineRepository phoneLineRepository;
+    @Mock
+    UserRepository userRepository;
 
     @Mock
     UserService userService ;
@@ -64,11 +65,25 @@ public class ClientServiceTest {
         final Client aClient= aClient();
         final Client aClientSaved =aClient();
         aClientSaved.setIdClient(1);
-
+        Mockito.when(clientRepository.existsById(1)).thenReturn(false);
         Mockito.when(clientRepository.save(aClient)).thenReturn(aClientSaved);
 
         final ResponseEntity response = ResponseEntity.ok(aClient);
         assertNotNull(response, "Should be not null.");
+    }
+    @Test
+    public void addClientExists() throws ElementExistsException {
+
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+
+        Mockito.when(clientRepository.existsById(anyInt())).thenReturn(true);
+
+        doThrow(ElementExistsException.class).when(clientRepository).save(aClient());
+
+        assertThrows(ElementExistsException.class,() -> clientService.addClient(aClient()));
+
+        verify(clientRepository, times(1)).save(aClient());
     }
     @Test
     public void addClientBadRequest() {
@@ -124,7 +139,8 @@ public class ClientServiceTest {
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
         Client cl = aClient();
         City c= aCity();
-
+        Mockito.when(clientRepository.existsById(cl.getIdClient())).thenReturn(true);
+        Mockito.when(cityRepository.existsById(c.getIdCity())).thenReturn(true);
 
         Mockito.when(clientRepository.getById(cl.getIdClient())).thenReturn(aClient());
         Mockito.when(cityRepository.getById(c.getIdCity())).thenReturn(aCity());
@@ -133,6 +149,21 @@ public class ClientServiceTest {
 
         final PostResponse response = clientService.putCityInUser(cl.getIdClient(),c.getIdCity());
         assertNotNull(response);
+
+    }
+    @Test
+    public void putCityInUserNotFound() {
+
+        when(clientRepository.findById(anyInt()))
+                .thenReturn(Optional.of(aClient()));
+        when(cityRepository.findById(anyInt()))
+                .thenReturn(Optional.of(aCity()));
+
+        when(clientRepository.save(aClient())).thenReturn(aClient());
+
+        assertThrows(ElementDoesNotExistsException.class, () -> clientService.putCityInUser(1, 2));
+
+        verify(clientRepository, times(0)).save(any(Client.class));
 
     }
     @Test
@@ -158,6 +189,8 @@ public class ClientServiceTest {
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
         Client cl = aClient();
         PhoneLine pl= aPhoneLine();
+        Mockito.when(clientRepository.existsById(cl.getIdClient())).thenReturn(true);
+        Mockito.when(phoneLineRepository.existsById(pl.getIdLine())).thenReturn(true);
 
         Mockito.when(clientRepository.getById(cl.getIdClient())).thenReturn(aClient());
         Mockito.when(phoneLineRepository.getById(pl.getIdLine())).thenReturn(aPhoneLine());
@@ -169,12 +202,29 @@ public class ClientServiceTest {
 
     }
     @Test
+    public void putPhoneLineInUserNotFound() {
+
+        when(clientRepository.findById(anyInt()))
+                .thenReturn(Optional.of(aClient()));
+        when(phoneLineRepository.findById(anyInt()))
+                .thenReturn(Optional.of(aPhoneLine()));
+
+        when(clientRepository.save(aClient())).thenReturn(aClient());
+
+        assertThrows(ElementDoesNotExistsException.class, () -> clientService.putPhoneLineInUser(1, 2));
+
+        verify(clientRepository, times(0)).save(any(Client.class));
+
+    }
+    @Test
     public void putUserInClient() {
 
         MockHttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
         Client cl = aClient();
         User u= aUser();
+        Mockito.when(clientRepository.existsById(cl.getIdClient())).thenReturn(true);
+        Mockito.when(userRepository.existsById(u.getIdUser())).thenReturn(true);
 
         Mockito.when(clientRepository.getById(cl.getIdClient())).thenReturn(aClient());
         Mockito.when(userService.findByCode(u.getIdUser())).thenReturn(aUser());
@@ -183,6 +233,21 @@ public class ClientServiceTest {
 
         final PostResponse response = clientService.putUserInClient(cl.getIdClient(), u.getIdUser());
         assertNotNull(response);
+
+    }
+    @Test
+    public void putUserInClientNotFound() {
+
+        when(clientRepository.findById(anyInt()))
+                .thenReturn(Optional.of(aClient()));
+        when(userRepository.findById(anyInt()))
+                .thenReturn(Optional.of(aUser()));
+
+        when(clientRepository.save(aClient())).thenReturn(aClient());
+
+        assertThrows(ElementDoesNotExistsException.class, () -> clientService.putUserInClient(1, 2));
+
+        verify(clientRepository, times(0)).save(any(Client.class));
 
     }
     @Test

@@ -11,6 +11,7 @@ import com.utn.phones.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
@@ -33,15 +34,17 @@ public class ClientService {
     private final PhoneLineRepository phoneLineRepository;
     private final CallRepository callRepository;
     private final BillRepository billRepository;
+    private final UserRepository userRepository;
     private final UserService userService;
 
     @Autowired
-    public ClientService(ClientRepository clientRepository, CityRepository cityRepository, PhoneLineRepository phoneLineRepository, CallRepository callRepository, BillRepository billRepository, UserService userService) {
+    public ClientService(ClientRepository clientRepository, CityRepository cityRepository, PhoneLineRepository phoneLineRepository, CallRepository callRepository, BillRepository billRepository, UserRepository userRepository, UserService userService) {
         this.clientRepository = clientRepository;
         this.cityRepository = cityRepository;
         this.phoneLineRepository = phoneLineRepository;
         this.callRepository = callRepository;
         this.billRepository = billRepository;
+        this.userRepository = userRepository;
         this.userService = userService;
     }
 
@@ -52,7 +55,7 @@ public class ClientService {
             this.clientRepository.save(client);
             return ResponseEntity.ok(client);
         }else{
-            throw new ElementExistsException("Client exists!!");
+            throw new ElementExistsException();
         }
 
 
@@ -73,30 +76,55 @@ public class ClientService {
 
     public Client findByCode(Integer idClient)throws ElementDoesNotExistsException {
         return this.clientRepository.findById(idClient)
-                .orElseThrow(() -> new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Client not Exists "));
+                .orElseThrow(() -> new ElementDoesNotExistsException());
     }
 
-    public PostResponse putCityInUser(Integer idClient, Integer idCity) {
-        Client cl= this.clientRepository.getById(idClient);
-        City c= this.cityRepository.getById(idCity);
-        cl.setCity(c);
-        this.clientRepository.save(cl);
-        return PostResponse.builder()
-                .httpStatus(HttpStatus.OK)
-                .link(buildURL(URL_CLIENT, cl.getCity().getName()))
-                .build();
+    public PostResponse putCityInUser(Integer idClient, Integer idCity) throws ElementDoesNotExistsException{
+
+        if(clientRepository.existsById(idClient)&& cityRepository.existsById(idCity)){
+            Client cl= this.clientRepository.getById(idClient);
+            City c= this.cityRepository.getById(idCity);
+            cl.setCity(c);
+            this.clientRepository.save(cl);
+            return PostResponse.builder()
+                    .httpStatus(HttpStatus.OK)
+                    .link(buildURL(URL_CLIENT, cl.getCity().getName()))
+                    .build();
+        }else {
+            throw new ElementDoesNotExistsException();
+        }
+
     }
-    public PostResponse putPhoneLineInUser(Integer idClient, Integer idPhoneLine) {
-        Client cl = this.clientRepository.getById(idClient);
-        PhoneLine p = this.phoneLineRepository.getById(idPhoneLine);
-        City c= this.cityRepository.getCodeByNumber(p.getNumberLine());
-        cl.setPhoneLine(p);
-        cl.setCity(c);
-        this.clientRepository.save(cl);
-        return PostResponse.builder()
-                .httpStatus(HttpStatus.OK)
-                .link(buildURL(URL_CLIENT, cl.getPhoneLine().getNumberLine()))
-                .build();
+    public PostResponse putPhoneLineInUser(Integer idClient, Integer idPhoneLine)throws ElementDoesNotExistsException {
+
+        if(clientRepository.existsById(idClient)&& phoneLineRepository.existsById(idPhoneLine)) {
+
+            Client cl = this.clientRepository.getById(idClient);
+            PhoneLine p = this.phoneLineRepository.getById(idPhoneLine);
+            City c = this.cityRepository.getCodeByNumber(p.getNumberLine());
+            cl.setPhoneLine(p);
+            cl.setCity(c);
+            this.clientRepository.save(cl);
+            return PostResponse.builder()
+                    .httpStatus(HttpStatus.OK)
+                    .link(buildURL(URL_CLIENT, cl.getPhoneLine().getNumberLine()))
+                    .build();
+        }else {
+            throw new ElementDoesNotExistsException();
+        }
+    }
+    public PostResponse putUserInClient(Integer idClient, Integer idUser)throws ElementDoesNotExistsException {
+        if(clientRepository.existsById(idClient) && userRepository.existsById(idUser)){
+            Client cl = this.clientRepository.getById(idClient);
+            cl.setUser(this.userService.findByCode(idUser));
+            this.clientRepository.save(cl);
+            return PostResponse.builder()
+                    .httpStatus(HttpStatus.OK)
+                    .link(buildURL(URl_USER, cl.getUser().getUsername()))
+                    .build();
+        }else {
+            throw new ElementDoesNotExistsException();
+        }
     }
 
 
@@ -129,13 +157,5 @@ public class ClientService {
         return billDtos;
     }
 
-    public PostResponse putUserInClient(Integer idClient, Integer idUser) {
-        Client cl = this.clientRepository.getById(idClient);
-        cl.setUser(this.userService.findByCode(idUser));
-        this.clientRepository.save(cl);
-        return PostResponse.builder()
-                .httpStatus(HttpStatus.OK)
-                .link(buildURL(URl_USER, cl.getUser().getUsername()))
-                .build();
-    }
+
 }

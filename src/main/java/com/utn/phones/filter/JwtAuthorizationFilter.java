@@ -1,7 +1,7 @@
 package com.utn.phones.filter;
 
 
-import com.utn.phones.service.JwtService;
+import com.utn.phones.service.JwtService.JwtService;
 import com.utn.phones.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

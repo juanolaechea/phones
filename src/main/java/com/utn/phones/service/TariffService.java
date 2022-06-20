@@ -30,14 +30,10 @@ public class TariffService {
     }
 
     public Tariff getTariffByCities(String codeO, String codeD)throws ElementDoesNotExistsException {
-        try{
             City o= this.cityService.findByCode(codeO);
             City d= this.cityService.findByCode(codeD);
             return this.tariffRepository.findByCityOriginAndCityDestination(o,d);
-        }
-        catch (ElementDoesNotExistsException e) {
-            throw new ElementDoesNotExistsException();
-        }
+
     }
 
 

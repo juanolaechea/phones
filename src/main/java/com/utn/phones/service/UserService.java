@@ -40,7 +40,7 @@ public class UserService implements UserDetailsService {
             User u = userRepository.save(user);
             return ResponseEntity.ok(user);
         }else {
-            throw new ElementExistsException("User exists!!");
+            throw new ElementExistsException();
         }
 
     }

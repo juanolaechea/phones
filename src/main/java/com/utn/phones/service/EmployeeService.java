@@ -3,6 +3,7 @@ package com.utn.phones.service;
 import com.utn.phones.Utils.PostResponse;
 import com.utn.phones.domain.Employee;
 import com.utn.phones.domain.User;
+import com.utn.phones.exceptions.ElementDoesNotExistsException;
 import com.utn.phones.persistence.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,7 +41,7 @@ public class EmployeeService {
 
     public Employee getById(Integer idEmployee) {
         return this.employeeRepository.findById(idEmployee)
-                .orElseThrow(() -> new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Employee not Exists "));
+                .orElseThrow(() -> new ElementDoesNotExistsException());
     }
 
     public PostResponse putUserInEmployee(Integer idEmployee, Integer idUser) {

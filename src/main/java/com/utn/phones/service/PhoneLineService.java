@@ -35,7 +35,7 @@ public class PhoneLineService {
             PhoneLine pl = phoneLineRepository.save(phoneLine);
             return ResponseEntity.ok(phoneLine);
         }else {
-            throw new ElementExistsException("Phone line exists!!");
+            throw new ElementExistsException();
         }
 
 
@@ -47,7 +47,7 @@ public class PhoneLineService {
 
     public PhoneLine findByCode(Integer idPhoneLine) throws DeauthorizedException {
         return phoneLineRepository.findById(idPhoneLine)
-                .orElseThrow(() -> new HttpClientErrorException(HttpStatus.BAD_REQUEST, "PhoneLine not Exists "));
+                .orElseThrow(() -> new ElementDoesNotExistsException());
     }
 
     public void deletePhoneLine(Integer idPhoneLine) {
